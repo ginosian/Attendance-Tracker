@@ -10,7 +10,7 @@ public class AuthAccessToken extends AbstractEntity{
     private String token;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @MapsId(value = "user_id")
     private User user;
 
     @Column(name = "description")

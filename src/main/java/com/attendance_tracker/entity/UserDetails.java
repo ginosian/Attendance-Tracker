@@ -15,8 +15,8 @@ public class UserDetails extends AbstractEntity{
     private String passwordHash;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @MapsId(value = "creator_id")
+    private Owner creator;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -44,12 +44,12 @@ public class UserDetails extends AbstractEntity{
         this.passwordHash = passwordHash;
     }
 
-    public User getUser() {
-        return user;
+    public Owner getCreator() {
+        return creator;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCreator(Owner creator) {
+        this.creator = creator;
     }
 
     public Set<Role> getRoles() {

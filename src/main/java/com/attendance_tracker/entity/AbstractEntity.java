@@ -1,6 +1,5 @@
 package com.attendance_tracker.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -16,15 +15,12 @@ public class AbstractEntity {
     protected String id;
 
     @Column(name = "created")
-    @JsonIgnoreProperties
     private LocalDateTime created;
 
     @Column(name = "updated")
-    @JsonIgnoreProperties
     private LocalDateTime updated;
 
-    @Column(name = "deleted", columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)
-    @JsonIgnoreProperties
+    @Column(name = "deleted", columnDefinition = "boolean default false", nullable = false)
     private boolean deleted;
 
     @PrePersist

@@ -10,14 +10,14 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:component-scan base-package="com.hr"/>
+    <context:component-scan base-package="com.attendance_tracker"/>
     <context:annotation-config/>
 
     <context:property-placeholder location="classpath:application.properties" local-override="false"
                                   ignore-unresolvable="true"/>
 
 
-    <jpa:repositories base-package="com.hr.repository"/>
+    <jpa:repositories base-package="com.attendance_tracker.repository"/>
 
     <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
 
@@ -48,7 +48,7 @@
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="com.hr"/>
+        <property name="packagesToScan" value="com.attendance_tracker"/>
         <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
         <property name="jpaProperties">
             <map>

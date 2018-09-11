@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "permission")
 public class Permission extends AbstractEntity {
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
     private PermissionType type;
 

@@ -4,7 +4,7 @@ import com.attendance_tracker.misc.RoleType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "role")
@@ -14,21 +14,18 @@ public class Role extends AbstractEntity{
     @JoinTable(name = "role_permission",
             joinColumns = {@JoinColumn(name = "role_id")},
             inverseJoinColumns = {@JoinColumn(name = "permission_id")})
-    private List<Permission> permissions;
+    private Set<Permission> permissions;
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
     private RoleType type;
 
-    @JsonIgnoreProperties
     @Column(name = "non_expired")
     private Boolean accountNonExpired;
 
-    @JsonIgnoreProperties
     @Column(name = "non_locked")
     private Boolean accountNonLocked;
 
-    @JsonIgnoreProperties
     @Column(name = "credentials_non_expired")
     private Boolean credentialsNonExpired;
 
@@ -40,12 +37,11 @@ public class Role extends AbstractEntity{
     private Boolean approved;
 
     //region GETTERS/SETTERS
-
-    public List<Permission> getPermissions() {
+    public Set<Permission> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(List<Permission> permissions) {
+    public void setPermissions(Set<Permission> permissions) {
         this.permissions = permissions;
     }
 
