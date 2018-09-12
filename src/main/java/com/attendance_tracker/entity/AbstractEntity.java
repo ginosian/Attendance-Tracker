@@ -33,12 +33,10 @@ public class AbstractEntity {
         updated = LocalDateTime.now();
     }
 
-    //region GETTERS/SETTERS
-
+    //region GETTERS / SETTERS
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -46,7 +44,6 @@ public class AbstractEntity {
     public LocalDateTime getCreated() {
         return created;
     }
-
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
@@ -54,7 +51,6 @@ public class AbstractEntity {
     public LocalDateTime getUpdated() {
         return updated;
     }
-
     public void setUpdated(LocalDateTime updated) {
         this.updated = updated;
     }
@@ -62,11 +58,9 @@ public class AbstractEntity {
     public boolean isDeleted() {
         return deleted;
     }
-
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
-
     // endregion
 
 }

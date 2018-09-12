@@ -15,7 +15,7 @@ public class Company extends User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    //region GETTERS/SETTERS
+    //region GETTERS / SETTERS
 
     public String getName() {
         return name;

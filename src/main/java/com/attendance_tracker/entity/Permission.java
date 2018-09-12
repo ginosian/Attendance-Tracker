@@ -12,8 +12,7 @@ public class Permission extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private PermissionType type;
 
-    //region GETTERS/SETTERS
-
+    //region GETTERS / SETTERS
     public PermissionType getType() {
         return type;
     }
@@ -21,7 +20,6 @@ public class Permission extends AbstractEntity {
     public void setType(PermissionType type) {
         this.type = type;
     }
-
     // endregion
 
     //region equals/hashcode/toString

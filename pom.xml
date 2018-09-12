@@ -28,6 +28,9 @@
         <com.zaxxer.version>2.4.5</com.zaxxer.version>
         <org.apache.commons.version>3.7</org.apache.commons.version>
         <com.google.guava.version>r03</com.google.guava.version>
+        <joda-time.version>2.10</joda-time.version>
+        <junit.version>4.12</junit.version>
+        <org.mockito.version>1.10.19</org.mockito.version>
     </properties>
 
     <dependencies>
@@ -50,6 +53,14 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>${org.springframework.boot.vestion}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${org.springframework.boot.vestion}</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- endregion -->
 
         <!-- region HIBERNATE -->
@@ -87,6 +98,35 @@
         </dependency>
         <!-- endregion -->
 
+        <!-- region TEST -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${org.mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.0.9.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.197</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- endregion -->
+
         <!-- region MISC -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -94,13 +134,17 @@
             <version>${org.apache.commons.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.google.guava/guava-collections -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava-collections</artifactId>
             <version>${com.google.guava.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
+        </dependency>
         <!-- endregion -->
 
     </dependencies>

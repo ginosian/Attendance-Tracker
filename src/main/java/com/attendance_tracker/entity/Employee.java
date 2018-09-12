@@ -32,9 +32,7 @@ public class Employee extends User{
     @Column(name = "leaving_date")
     private LocalDateTime leavingDate;
 
-    //region GETTERS/SETTERS
-
-
+    //region GETTERS / SETTERS
     public Company getCompany() {
         return company;
     }
@@ -90,7 +88,6 @@ public class Employee extends User{
     public void setLeavingDate(LocalDateTime leavingDate) {
         this.leavingDate = leavingDate;
     }
-
     //endregion
 
     //region equals/hashcode/toString

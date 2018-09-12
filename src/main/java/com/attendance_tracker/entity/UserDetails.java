@@ -26,8 +26,7 @@ public class UserDetails extends AbstractEntity{
     )
     private Set<Role> roles = new HashSet<>();
 
-    //region GETTERS/SETTERS
-
+    //region GETTERS / SETTERS
     public String getUsername() {
         return username;
     }
@@ -59,7 +58,6 @@ public class UserDetails extends AbstractEntity{
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
     //endregion
 
     //region equals/hashcode/toString

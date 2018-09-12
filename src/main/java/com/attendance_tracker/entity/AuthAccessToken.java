@@ -16,7 +16,7 @@ public class AuthAccessToken extends AbstractEntity{
     @Column(name = "description")
     private String description;
 
-    //region GETTERS/SETTERS
+    //region GETTERS / SETTERS
 
     public String getToken() {
         return token;
