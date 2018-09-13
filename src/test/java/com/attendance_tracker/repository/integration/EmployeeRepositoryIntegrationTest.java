@@ -1,6 +1,7 @@
-package com.attendance_tracker.repository;
+package com.attendance_tracker.repository.integration;
 
 import com.attendance_tracker.AbstractTest;
+import com.attendance_tracker.repository.EmployeeRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.attendance_tracker.repository;
+package com.attendance_tracker.repository.integration;
 
 import com.attendance_tracker.AbstractTest;
 import com.attendance_tracker.MockData;
@@ -6,6 +6,8 @@ import com.attendance_tracker.entity.Permission;
 import com.attendance_tracker.entity.Role;
 import com.attendance_tracker.misc.PermissionType;
 import com.attendance_tracker.misc.RoleType;
+import com.attendance_tracker.repository.PermissionRepository;
+import com.attendance_tracker.repository.RoleRepository;
 import com.google.common.collect.Sets;
 import org.junit.After;
 import org.junit.Before;

@@ -1,17 +1,21 @@
-package com.attendance_tracker.repository;
+package com.attendance_tracker.repository.integration;
 
 import com.attendance_tracker.AbstractTest;
+import com.attendance_tracker.repository.UserDetailsRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.junit.Assert.*;
+
+
 @RunWith(SpringJUnit4ClassRunner.class)
-public class OwnerRepositoryIntegrationTest extends AbstractTest {
+public class UserDetailsRepositoryTest extends AbstractTest {
 
     @Autowired
-    OwnerRepository ownerRepository;
+    private UserDetailsRepository userDetailsRepository;
 
     @Before
     public void setUp() throws Exception {
