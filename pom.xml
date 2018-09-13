@@ -125,6 +125,14 @@
             <version>1.4.197</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>ru.yandex.qatools.allure</groupId>
+            <artifactId>allure-junit-adaptor</artifactId>
+            <version>1.5.4</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- endregion -->
 
         <!-- region MISC -->
@@ -144,6 +152,12 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>${joda-time.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
         </dependency>
         <!-- endregion -->
 

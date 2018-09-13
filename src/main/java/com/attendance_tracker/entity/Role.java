@@ -9,7 +9,7 @@ import java.util.Set;
 @Table(name = "role")
 public class Role extends AbstractEntity{
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "role_permission",
             joinColumns = {@JoinColumn(name = "role_id")},
             inverseJoinColumns = {@JoinColumn(name = "permission_id")})
