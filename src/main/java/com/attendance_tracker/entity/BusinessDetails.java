@@ -10,7 +10,7 @@ public class BusinessDetails extends AbstractEntity{
     @OneToOne(optional = false)
     private Business business;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REFRESH)
     private Set<BusinessDivision> businessDivisions;
 
     // region GETTERS / SETTERS

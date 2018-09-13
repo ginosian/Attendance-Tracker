@@ -1,7 +1,9 @@
 package com.attendance_tracker.entity;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "business_division")
@@ -11,17 +13,7 @@ public class BusinessDivision extends AbstractEntity {
     private ContactDetails contactDetails;
 
     @OneToOne
-    private Policy default_policy;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "business_division_individual_policy",
-            joinColumns = {@JoinColumn(name = "business_division_id")},
-            inverseJoinColumns = {@JoinColumn(name = "individual_policy_id")})
-    private Set<Policy> individualPolicies;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Employee> employees;
-
+    private Policy defaultPolicy;
 
     public ContactDetails getContactDetails() {
         return contactDetails;
@@ -31,27 +23,12 @@ public class BusinessDivision extends AbstractEntity {
         this.contactDetails = contactDetails;
     }
 
-    public Policy getDefault_policy() {
-        return default_policy;
+    public Policy getDefaultPolicy() {
+        return defaultPolicy;
     }
 
-    public void setDefault_policy(Policy default_policy) {
-        this.default_policy = default_policy;
+    public void setDefaultPolicy(Policy defaultPolicy) {
+        this.defaultPolicy = defaultPolicy;
     }
 
-    public Set<Policy> getIndividualPolicies() {
-        return individualPolicies;
-    }
-
-    public void setIndividualPolicies(Set<Policy> individualPolicies) {
-        this.individualPolicies = individualPolicies;
-    }
-
-    public Set<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-        this.employees = employees;
-    }
 }

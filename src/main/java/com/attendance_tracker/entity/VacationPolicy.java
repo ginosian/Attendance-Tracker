@@ -7,48 +7,50 @@ import javax.persistence.Embeddable;
 public class VacationPolicy {
 
     @Column(name = "vacation_per_day")
-    private Integer vacationPerDay;
+    private Double vacationPerDay;
 
     @Column(name = "vacation_per_week")
-    private Integer vacationPerWeek;
+    private Double vacationPerWeek;
 
     @Column(name = "vacation_per_month")
-    private Integer vacationPerMonth;
+    private Double vacationPerMonth;
 
     @Column(name = "vacation_per_year")
-    private Integer vacationPerYear;
+    private Double vacationPerYear;
 
     // region GETTERS / SETTERS
-    public Integer getVacationPerDay() {
+
+    public Double getVacationPerDay() {
         return vacationPerDay;
     }
 
-    public void setVacationPerDay(Integer vacationPerDay) {
+    public void setVacationPerDay(Double vacationPerDay) {
         this.vacationPerDay = vacationPerDay;
     }
 
-    public Integer getVacationPerWeek() {
+    public Double getVacationPerWeek() {
         return vacationPerWeek;
     }
 
-    public void setVacationPerWeek(Integer vacationPerWeek) {
+    public void setVacationPerWeek(Double vacationPerWeek) {
         this.vacationPerWeek = vacationPerWeek;
     }
 
-    public Integer getVacationPerMonth() {
+    public Double getVacationPerMonth() {
         return vacationPerMonth;
     }
 
-    public void setVacationPerMonth(Integer vacationPerMonth) {
+    public void setVacationPerMonth(Double vacationPerMonth) {
         this.vacationPerMonth = vacationPerMonth;
     }
 
-    public Integer getVacationPerYear() {
+    public Double getVacationPerYear() {
         return vacationPerYear;
     }
 
-    public void setVacationPerYear(Integer vacationPerYear) {
+    public void setVacationPerYear(Double vacationPerYear) {
         this.vacationPerYear = vacationPerYear;
     }
+
     // endregion
 }

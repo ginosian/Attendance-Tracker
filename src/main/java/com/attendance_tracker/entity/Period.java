@@ -45,6 +45,7 @@ public class Period extends AbstractEntity{
     private TimeBufferType endBufferType;
 
     // region GETTERS / SETTERS
+
     public Time getStart() {
         return start;
     }
@@ -92,5 +93,6 @@ public class Period extends AbstractEntity{
     public void setEndBufferType(TimeBufferType endBufferType) {
         this.endBufferType = endBufferType;
     }
+
     // endregion
 }

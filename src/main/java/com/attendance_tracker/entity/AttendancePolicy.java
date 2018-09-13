@@ -9,17 +9,14 @@ import java.util.Set;
 @Table(name = "attendance_policy")
 public class AttendancePolicy extends AbstractEntity{
 
-    @OneToOne
-    private Policy policy;
-
     @Column(name = "attendance_calculation_type")
     @Enumerated(EnumType.STRING)
     private AttendanceCalculationType attendanceCalculationType;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Period> inPeriods;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Period> outPeriods;
 
     @Column(name = "working_hours_day")
@@ -32,14 +29,6 @@ public class AttendancePolicy extends AbstractEntity{
     private Integer workingDaysPerWeek;
 
     // region GETTERS / SETTERS
-
-    public Policy getPolicy() {
-        return policy;
-    }
-
-    public void setPolicy(Policy policy) {
-        this.policy = policy;
-    }
 
     public AttendanceCalculationType getAttendanceCalculationType() {
         return attendanceCalculationType;
@@ -88,6 +77,7 @@ public class AttendancePolicy extends AbstractEntity{
     public void setWorkingDaysPerWeek(Integer workingDaysPerWeek) {
         this.workingDaysPerWeek = workingDaysPerWeek;
     }
+
 
     // endregion
 

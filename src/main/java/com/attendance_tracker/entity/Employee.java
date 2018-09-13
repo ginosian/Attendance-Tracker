@@ -17,7 +17,12 @@ public class Employee extends User{
     @Column(name = "last_name")
     private String lastName;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "business_division_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "business_dvision_employee_fk")
+    )
     private BusinessDivision businessDivision;
 
     @Embedded

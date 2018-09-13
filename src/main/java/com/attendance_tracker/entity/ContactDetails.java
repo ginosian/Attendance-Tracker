@@ -10,7 +10,7 @@ public class ContactDetails {
     @Column(name = "phone", unique = true)
     private String phone;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
     @Embedded
