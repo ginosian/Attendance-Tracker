@@ -3,16 +3,24 @@ package com.attendance_tracker.entity;
 import com.attendance_tracker.misc.AttendanceCalculationType;
 
 import javax.persistence.*;
+import java.util.Set;
 
-@Embeddable
-public class AttendancePolicy {
+@Entity
+@Table(name = "attendance_policy")
+public class AttendancePolicy extends AbstractEntity{
+
+    @OneToOne
+    private Policy policy;
 
     @Column(name = "attendance_calculation_type")
     @Enumerated(EnumType.STRING)
     private AttendanceCalculationType attendanceCalculationType;
 
-    @Embedded
-    private WorkingDaySchedule workingDaySchedule;
+    @OneToMany
+    private Set<Period> inPeriods;
+
+    @OneToMany
+    private Set<Period> outPeriods;
 
     @Column(name = "working_hours_day")
     private Integer workingHoursPerDay;
@@ -25,6 +33,14 @@ public class AttendancePolicy {
 
     // region GETTERS / SETTERS
 
+    public Policy getPolicy() {
+        return policy;
+    }
+
+    public void setPolicy(Policy policy) {
+        this.policy = policy;
+    }
+
     public AttendanceCalculationType getAttendanceCalculationType() {
         return attendanceCalculationType;
     }
@@ -33,12 +49,20 @@ public class AttendancePolicy {
         this.attendanceCalculationType = attendanceCalculationType;
     }
 
-    public WorkingDaySchedule getWorkingDaySchedule() {
-        return workingDaySchedule;
+    public Set<Period> getInPeriods() {
+        return inPeriods;
     }
 
-    public void setWorkingDaySchedule(WorkingDaySchedule workingDaySchedule) {
-        this.workingDaySchedule = workingDaySchedule;
+    public void setInPeriods(Set<Period> inPeriods) {
+        this.inPeriods = inPeriods;
+    }
+
+    public Set<Period> getOutPeriods() {
+        return outPeriods;
+    }
+
+    public void setOutPeriods(Set<Period> outPeriods) {
+        this.outPeriods = outPeriods;
     }
 
     public Integer getWorkingHoursPerDay() {

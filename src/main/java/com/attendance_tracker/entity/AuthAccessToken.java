@@ -11,7 +11,7 @@ public class AuthAccessToken extends AbstractEntity{
 
     @OneToOne
     @MapsId(value = "user_id")
-    private User user;
+    private Authority user;
 
     @Column(name = "description")
     private String description;
@@ -26,11 +26,11 @@ public class AuthAccessToken extends AbstractEntity{
         this.token = token;
     }
 
-    public User getUser() {
+    public Authority getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Authority user) {
         this.user = user;
     }
 
@@ -41,6 +41,7 @@ public class AuthAccessToken extends AbstractEntity{
     public void setDescription(String description) {
         this.description = description;
     }
+
 
     // endregion
 

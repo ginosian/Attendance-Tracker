@@ -1,8 +1,8 @@
 package com.attendance_tracker.repository;
 
 
-import com.attendance_tracker.entity.Company;
+import com.attendance_tracker.entity.Business;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CompanyRepository extends JpaRepository<Company, String> {
+public interface CompanyRepository extends JpaRepository<Business, String> {
 }

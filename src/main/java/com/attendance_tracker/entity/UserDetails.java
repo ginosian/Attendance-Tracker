@@ -14,9 +14,17 @@ public class UserDetails extends AbstractEntity{
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @OneToOne
-    @MapsId(value = "creator_id")
-    private Owner creator;
+    @Column(name = "non_expired")
+    private Boolean accountNonExpired;
+
+    @Column(name = "non_locked")
+    private Boolean accountNonLocked;
+
+    @Column(name = "credentials_non_expired")
+    private Boolean credentialsNonExpired;
+
+    @Column(name = "enabled")
+    private Boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -26,7 +34,12 @@ public class UserDetails extends AbstractEntity{
     )
     private Set<Role> roles = new HashSet<>();
 
+    @OneToOne
+    @MapsId(value = "creator_id")
+    private Owner creator;
+
     //region GETTERS / SETTERS
+
     public String getUsername() {
         return username;
     }
@@ -43,12 +56,36 @@ public class UserDetails extends AbstractEntity{
         this.passwordHash = passwordHash;
     }
 
-    public Owner getCreator() {
-        return creator;
+    public Boolean getAccountNonExpired() {
+        return accountNonExpired;
     }
 
-    public void setCreator(Owner creator) {
-        this.creator = creator;
+    public void setAccountNonExpired(Boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public Boolean getAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public Boolean getCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Set<Role> getRoles() {
@@ -58,6 +95,15 @@ public class UserDetails extends AbstractEntity{
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public Owner getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Owner creator) {
+        this.creator = creator;
+    }
+
     //endregion
 
     //region equals/hashcode/toString

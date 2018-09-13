@@ -4,8 +4,9 @@ import com.attendance_tracker.misc.TimeBufferType;
 
 import javax.persistence.*;
 
-@Embeddable
-public class Period {
+@Entity
+@Table(name = "period")
+public class Period extends AbstractEntity{
 
     @AttributeOverrides({
             @AttributeOverride(name = "hour", column = @Column(name = "start_hour")),

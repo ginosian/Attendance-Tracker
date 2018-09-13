@@ -11,20 +11,17 @@ import java.time.LocalDateTime;
 @Table(name = "employee")
 public class Employee extends User{
 
-    @OneToOne
-    private Company company;
-
     @Column(name = "first_name")
     private String firstName;
 
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @OneToOne
+    private BusinessDivision businessDivision;
 
-    @Column(name = "phone", unique = true)
-    private String phone;
+    @Embedded
+    private ContactDetails contactDetails;
 
     @Column(name = "joining_date")
     private LocalDateTime joiningDate;
@@ -33,13 +30,6 @@ public class Employee extends User{
     private LocalDateTime leavingDate;
 
     //region GETTERS / SETTERS
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -57,20 +47,20 @@ public class Employee extends User{
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public BusinessDivision getBusinessDivision() {
+        return businessDivision;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setBusinessDivision(BusinessDivision businessDivision) {
+        this.businessDivision = businessDivision;
     }
 
-    public String getPhone() {
-        return phone;
+    public ContactDetails getContactDetails() {
+        return contactDetails;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setContactDetails(ContactDetails contactDetails) {
+        this.contactDetails = contactDetails;
     }
 
     public LocalDateTime getJoiningDate() {
@@ -88,6 +78,8 @@ public class Employee extends User{
     public void setLeavingDate(LocalDateTime leavingDate) {
         this.leavingDate = leavingDate;
     }
+
+
     //endregion
 
     //region equals/hashcode/toString
@@ -101,7 +93,6 @@ public class Employee extends User{
 
         return new EqualsBuilder()
                 .append(id, that.id)
-                .append(email, that.email)
                 .isEquals();
     }
 
@@ -109,7 +100,6 @@ public class Employee extends User{
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(id)
-                .append(email)
                 .toHashCode();
     }
 
@@ -119,12 +109,9 @@ public class Employee extends User{
                 .append("id", id)
                 .append("firstName", firstName)
                 .append("lastName", lastName)
-                .append("email", email)
-                .append("phone", phone)
                 .append("joiningDate", joiningDate)
                 .append("leavingDate", leavingDate)
                 .toString();
     }
-    //endregion
     //endregion
 }
