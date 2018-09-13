@@ -5,5 +5,5 @@ import org.springframework.context.annotation.ImportResource;
 @Configuration
 @ComponentScan
 @ImportResource("hr/app-context.xml")
-public class TestContext {
+public class ApplicationTestContext {
 }
