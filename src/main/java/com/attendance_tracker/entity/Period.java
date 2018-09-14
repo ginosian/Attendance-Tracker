@@ -3,10 +3,11 @@ package com.attendance_tracker.entity;
 import com.attendance_tracker.misc.TimeBufferType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "period")
-public class Period extends AbstractEntity{
+public class Period extends AbstractEntity implements Serializable {
 
     @AttributeOverrides({
             @AttributeOverride(name = "hour", column = @Column(name = "start_hour")),

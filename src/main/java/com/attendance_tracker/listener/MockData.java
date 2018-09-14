@@ -2,10 +2,13 @@ package com.attendance_tracker.listener;
 
 import com.attendance_tracker.entity.*;
 import com.attendance_tracker.misc.AttendanceCalculationType;
+import com.attendance_tracker.misc.PeriodType;
 import com.attendance_tracker.misc.TimeBufferType;
 import com.attendance_tracker.misc.TimeOffMinDuration;
 import com.google.common.collect.Sets;
 
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Set;
 
 public class MockData {
@@ -76,8 +79,9 @@ public class MockData {
         attendancePolicy.setWorkingDaysPerWeek(5);
         attendancePolicy.setWorkingHoursPerDay(8);
         attendancePolicy.setWorkingHoursPerWeek(40);
-        attendancePolicy.setInPeriods(ins);
-        attendancePolicy.setOutPeriods(outs);
+//        attendancePolicy.setInPeriods(ins);
+//        attendancePolicy.setOutPeriods(outs);
+        attendancePolicy.setPeriods(periodsSet());
         return attendancePolicy;
     }
 
@@ -122,5 +126,29 @@ public class MockData {
         period.setStartBuffer(startTimeBuffer);
         period.setStartBufferType(startTimeBufferType);
         return period;
+    }
+
+    public static Map<PeriodType, PeriodDetail> periods(){
+        final Map<PeriodType, PeriodDetail> map = new EnumMap<>(PeriodType.class);
+        final PeriodDetail workPeriodDetail = new PeriodDetail();
+        workPeriodDetail.setPeriods(Sets.newHashSet(period()));
+        final PeriodDetail lunchPeriodDetail = new PeriodDetail();
+        lunchPeriodDetail.setPeriods(Sets.newHashSet(period()));
+
+        map.put(PeriodType.WORK, workPeriodDetail);
+        map.put(PeriodType.LUNCH, lunchPeriodDetail);
+        return map;
+    }
+
+    public static Set<PeriodDetail> periodsSet(){
+        final PeriodDetail periodDetailWork = new PeriodDetail();
+        periodDetailWork.setPeriodType(PeriodType.WORK);
+        periodDetailWork.setPeriods(Sets.newHashSet(period()));
+
+        final PeriodDetail periodDetailLunch = new PeriodDetail();
+        periodDetailLunch.setPeriodType(PeriodType.LUNCH);
+        periodDetailLunch.setPeriods(Sets.newHashSet(period()));
+
+        return Sets.newHashSet(periodDetailWork, periodDetailLunch);
     }
 }

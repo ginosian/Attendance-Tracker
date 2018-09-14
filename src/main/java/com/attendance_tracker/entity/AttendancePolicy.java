@@ -14,10 +14,7 @@ public class AttendancePolicy extends AbstractEntity{
     private AttendanceCalculationType attendanceCalculationType;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<Period> inPeriods;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Period> outPeriods;
+    private Set<PeriodDetail> periods;
 
     @Column(name = "working_hours_day")
     private Integer workingHoursPerDay;
@@ -38,20 +35,12 @@ public class AttendancePolicy extends AbstractEntity{
         this.attendanceCalculationType = attendanceCalculationType;
     }
 
-    public Set<Period> getInPeriods() {
-        return inPeriods;
+    public Set<PeriodDetail> getPeriods() {
+        return periods;
     }
 
-    public void setInPeriods(Set<Period> inPeriods) {
-        this.inPeriods = inPeriods;
-    }
-
-    public Set<Period> getOutPeriods() {
-        return outPeriods;
-    }
-
-    public void setOutPeriods(Set<Period> outPeriods) {
-        this.outPeriods = outPeriods;
+    public void setPeriods(Set<PeriodDetail> periods) {
+        this.periods = periods;
     }
 
     public Integer getWorkingHoursPerDay() {
