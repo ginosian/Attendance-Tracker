@@ -148,4 +148,28 @@ public class MockData {
 
         return Sets.newHashSet(periodDetailWork, periodDetailLunch);
     }
+
+    public static Authority authority(final User user, final UserDetails userDetails){
+        final Authority authority = new Authority();
+        authority.setUser(user);
+        authority.setUserDetails(userDetails);
+        return authority;
+    }
+
+    public static UserDetails userDetails(final Set<Role> roles, final User user, final Owner creator){
+        final UserDetails userDetails = new UserDetails();
+        userDetails.setUsername(userDetails.hashCode() + "@" + userDetails.hashCode() + ".com");
+        userDetails.setPasswordHash(String.valueOf(userDetails.hashCode()));
+        userDetails.setRoles(roles);
+        userDetails.setUser(user);
+        userDetails.setCreator(creator);
+        return userDetails;
+    }
+
+    public static AuthAccessToken authAccessToken(final Authority authority){
+        final AuthAccessToken authAccessToken = new AuthAccessToken();
+        authAccessToken.setToken(String.valueOf(authAccessToken.hashCode()));
+        authAccessToken.setUser(authority);
+        return authAccessToken;
+    }
 }

@@ -8,12 +8,10 @@ public class Authority extends AbstractEntity {
 
     // region PROPERTIES
     @OneToOne(optional = false)
-    @MapsId
     @JoinColumn(foreignKey = @ForeignKey(name = "user_authority_fk"))
     private User user;
 
     @OneToOne(optional = false)
-    @MapsId
     @JoinColumn(foreignKey = @ForeignKey(name = "user_user_details_fk"))
     private UserDetails userDetails;
     // endregion

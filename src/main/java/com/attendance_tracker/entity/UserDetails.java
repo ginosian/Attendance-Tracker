@@ -35,7 +35,11 @@ public class UserDetails extends AbstractEntity {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "user_user_details_fk"))
+    private User user;
+
+    @OneToOne
     @JoinColumn(name = "creator_id", nullable = false, foreignKey = @ForeignKey(name = "owner_user_details_fk"))
     private Owner creator;
     // endregion
@@ -44,7 +48,6 @@ public class UserDetails extends AbstractEntity {
     public String getUsername() {
         return username;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -52,7 +55,6 @@ public class UserDetails extends AbstractEntity {
     public String getPasswordHash() {
         return passwordHash;
     }
-
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
@@ -60,7 +62,6 @@ public class UserDetails extends AbstractEntity {
     public Boolean getAccountNonExpired() {
         return accountNonExpired;
     }
-
     public void setAccountNonExpired(Boolean accountNonExpired) {
         this.accountNonExpired = accountNonExpired;
     }
@@ -68,7 +69,6 @@ public class UserDetails extends AbstractEntity {
     public Boolean getAccountNonLocked() {
         return accountNonLocked;
     }
-
     public void setAccountNonLocked(Boolean accountNonLocked) {
         this.accountNonLocked = accountNonLocked;
     }
@@ -76,7 +76,6 @@ public class UserDetails extends AbstractEntity {
     public Boolean getCredentialsNonExpired() {
         return credentialsNonExpired;
     }
-
     public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
         this.credentialsNonExpired = credentialsNonExpired;
     }
@@ -84,7 +83,6 @@ public class UserDetails extends AbstractEntity {
     public Boolean getEnabled() {
         return enabled;
     }
-
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
@@ -92,15 +90,20 @@ public class UserDetails extends AbstractEntity {
     public Set<Role> getRoles() {
         return roles;
     }
-
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Owner getCreator() {
         return creator;
     }
-
     public void setCreator(Owner creator) {
         this.creator = creator;
     }

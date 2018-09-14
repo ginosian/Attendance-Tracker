@@ -11,7 +11,6 @@ public class AuthAccessToken extends AbstractEntity {
     private String token;
 
     @OneToOne(optional = false)
-    @MapsId
     @JoinColumn(foreignKey = @ForeignKey(name = "user_auth_access_token_fk"))
     private Authority user;
 

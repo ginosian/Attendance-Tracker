@@ -3,6 +3,7 @@ package com.attendance_tracker.listener;
 import com.attendance_tracker.entity.*;
 import com.attendance_tracker.repository.AbstractRepository;
 import com.attendance_tracker.repository.BusinessDivisionRepository;
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +94,22 @@ public class ApplicationEventListener {
         businessDivision.setDefaultPolicy(policy);
         abstractRepository.save(businessDivision);
         logger.debug("Done Business Division with policy.");
+
+        logger.info("Saving User Details ...");
+        final UserDetails employeeDetails = abstractRepository.save(MockData.userDetails(Sets.newHashSet(roles), employee, owner));
+        final UserDetails ownerDetails = abstractRepository.save(MockData.userDetails(Sets.newHashSet(roles), owner, owner));
+        logger.debug("Done User Details.");
+
+        logger.info("Saving Authority ...");
+        Authority authorityEmployee = MockData.authority(employee, employeeDetails);
+        authorityEmployee = abstractRepository.save(authorityEmployee);
+        Authority authorityOwner = MockData.authority(owner, ownerDetails);
+        authorityOwner = abstractRepository.save(authorityOwner);
+        logger.debug("Done Authority.");
+
+        logger.info("Saving Auth Access Token ...");
+        final AuthAccessToken authAccessTokenEmployee = abstractRepository.save(MockData.authAccessToken(authorityEmployee));
+        final AuthAccessToken authAccessTokenOwner = abstractRepository.save(MockData.authAccessToken(authorityOwner));
+        logger.debug("Done Auth Access Token.");
     }
 }
