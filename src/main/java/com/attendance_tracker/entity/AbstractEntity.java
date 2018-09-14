@@ -1,9 +1,9 @@
 package com.attendance_tracker.entity;
 
-import org.hibernate.annotations.GenericGenerator;
+        import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+        import javax.persistence.*;
+        import java.time.LocalDateTime;
 
 @MappedSuperclass
 public class AbstractEntity {

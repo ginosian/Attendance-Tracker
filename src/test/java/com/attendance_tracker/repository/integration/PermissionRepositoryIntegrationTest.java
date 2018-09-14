@@ -73,6 +73,6 @@ public class PermissionRepositoryIntegrationTest extends AbstractTest {
     @DisplayName("Delete successful")
     public void test6(){
         permissionRepository.delete(permission);
-        assertNull(permissionRepository.findById(permission.getId()).orElse(null));
+        assertNull(permissionRepository.findById(permission.getId().toString()).orElse(null));
     }
 }
