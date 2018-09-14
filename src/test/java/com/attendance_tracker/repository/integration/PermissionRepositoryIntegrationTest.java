@@ -35,7 +35,6 @@ public class PermissionRepositoryIntegrationTest extends AbstractTest {
     public void setUp() throws Exception {
         role = roleRepository.save(MockData.createRole(RoleType.OWNER));
         permission = MockData.createPermission(PermissionType.READ);
-        permission.setRole(role);
         permission = permissionRepository.save(permission);
     }
 
@@ -49,7 +48,6 @@ public class PermissionRepositoryIntegrationTest extends AbstractTest {
     @DisplayName("Create successful.")
     public void test1(){
         Permission permission = MockData.createPermission(PermissionType.ALL);
-        permission.setRole(role);
         permission = permissionRepository.save(permission);
         assertNotNull(permission);
     }
@@ -58,7 +56,6 @@ public class PermissionRepositoryIntegrationTest extends AbstractTest {
     @DisplayName("Create fails when permission type is missing.")
     public void test2(){
         Permission permission = MockData.createPermission(null);
-        permission.setRole(role);
         permissionRepository.save(permission);
     }
 
@@ -66,20 +63,12 @@ public class PermissionRepositoryIntegrationTest extends AbstractTest {
     @DisplayName("Create fails when duplicate type is persisted.")
     public void test3(){
         Permission permission = MockData.createPermission(PermissionType.READ);
-        permission.setRole(role);
-        permissionRepository.save(permission);
-    }
-
-    @Test(expected = DataIntegrityViolationException.class)
-    @DisplayName("Create fails when permission with no role is persisted.")
-    public void test4(){
-        Permission permission = MockData.createPermission(PermissionType.ALL);
         permissionRepository.save(permission);
     }
 
     @Test
     @DisplayName("Update successful.")
-    public void test5(){
+    public void test4(){
         permission.setType(PermissionType.ALL);
         final Permission updatedPermission = permissionRepository.save(permission);
         assertEquals(permission.getId(), updatedPermission.getId());
@@ -88,14 +77,14 @@ public class PermissionRepositoryIntegrationTest extends AbstractTest {
 
     @Test(expected = DataIntegrityViolationException.class)
     @DisplayName("Update fails when a null type is persisted.")
-    public void test6(){
+    public void test5(){
         permission.setType(null);
         permissionRepository.save(permission);
     }
 
     @Test
     @DisplayName("Delete successful")
-    public void test7(){
+    public void test6(){
         permissionRepository.delete(permission);
         assertNull(permissionRepository.findById(permission.getId()).orElse(null));
     }

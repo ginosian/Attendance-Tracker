@@ -16,7 +16,7 @@ public class MockData {
         return permission;
     }
 
-    public static List<Permission> createPermissions(final PermissionType ... permissionTypes){
+    public static List<Permission> createPermissions(final Role role, final PermissionType ... permissionTypes){
         final List<Permission> permissions = new ArrayList();
         for (PermissionType permissionType : permissionTypes) {
             final Permission permission = new Permission();

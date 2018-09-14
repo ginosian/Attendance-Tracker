@@ -39,7 +39,7 @@ public class ApplicationEventListener {
         logger.debug("Done saving Roles.");
 
         logger.info("Saving Permissions ...");
-        final List<Permission> permissions = abstractRepository.saveAll(StaticData.createPermissions().stream().peek(permission -> permission.setRole(roles.get(0))).collect(Collectors.toSet()));
+        final List<Permission> permissions = abstractRepository.saveAll(StaticData.createPermissions());
         logger.debug("Done saving Permissions.");
 
         logger.info("Saving Business ...");

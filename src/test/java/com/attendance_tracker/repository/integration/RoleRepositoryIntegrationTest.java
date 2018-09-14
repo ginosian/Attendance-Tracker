@@ -38,8 +38,9 @@ public class RoleRepositoryIntegrationTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        permissions= permissionRepository.saveAll(MockData.createPermissions(PermissionType.ALL));
         role = roleRepository.save(MockData.createRole(RoleType.OWNER));
+        permissions = MockData.createPermissions(role, PermissionType.ALL);
+        permissions= permissionRepository.saveAll(permissions);
     }
 
     @After
@@ -55,30 +56,21 @@ public class RoleRepositoryIntegrationTest extends AbstractTest {
         assertNotNull(role);
     }
 
-    @Test
-    @DisplayName("Save successful with permissions.")
-    public void test2(){
-        Role role = MockData.createRole(RoleType.EMPLOYEE);
-        role.setPermissions(Sets.newHashSet(permissions));
-        role = roleRepository.save(role);
-        assertTrue(role.getPermissions().size() > 0);
-    }
-
     @Test(expected = DataIntegrityViolationException.class)
     @DisplayName("Save fails when role type is missing.")
-    public void test3(){
+    public void test2(){
         roleRepository.save(MockData.createRole(null));
     }
 
     @Test(expected = DataIntegrityViolationException.class)
     @DisplayName("Save fails when duplicate type is persisted.")
-    public void test4(){
+    public void test3(){
         roleRepository.save(MockData.createRole(RoleType.OWNER));
     }
 
     @Test
     @DisplayName("Update successful.")
-    public void test5(){
+    public void test4(){
         role.setType(RoleType.COMPANY_ADMIN);
         final Role updatedRole = roleRepository.save(role);
         assertEquals(role.getId(), updatedRole.getId());
@@ -87,14 +79,14 @@ public class RoleRepositoryIntegrationTest extends AbstractTest {
 
     @Test
     @DisplayName("Update with permission successful.")
-    public void test6(){
+    public void test5(){
        role.setPermissions(Sets.newHashSet(permissions));
        role = roleRepository.save(role);
     }
 
     @Test(expected = InvalidDataAccessApiUsageException.class)
     @DisplayName("Update of role with no permission ID fails.")
-    public void test7(){
+    public void test6(){
         role.setPermissions(Sets.newHashSet(
                 permissions
                         .stream()
@@ -105,14 +97,14 @@ public class RoleRepositoryIntegrationTest extends AbstractTest {
 
     @Test(expected = DataIntegrityViolationException.class)
     @DisplayName("Update fails when a null type is persisted.")
-    public void test8() {
+    public void test7() {
         role.setType(null);
         roleRepository.save(role);
     }
 
     @Test
-    @DisplayName("Delete of role permission successful")
-    public void test9(){
+    @DisplayName("Remove permission from role successful")
+    public void test8(){
         role.setPermissions(null);
         roleRepository.save(role);
         assertNull(role.getPermissions());
@@ -120,7 +112,8 @@ public class RoleRepositoryIntegrationTest extends AbstractTest {
 
     @Test
     @DisplayName("Delete successful")
-    public void test10(){
+    public void test9(){
+        role.setPermissions(null);
         roleRepository.delete(role);
         assertNull(roleRepository.findById(role.getId()).orElse(null));
     }
