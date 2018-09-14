@@ -3,8 +3,11 @@ package com.attendance_tracker.repository.integration;
 import com.attendance_tracker.AbstractTest;
 import com.attendance_tracker.MockData;
 import com.attendance_tracker.entity.Permission;
+import com.attendance_tracker.entity.Role;
 import com.attendance_tracker.misc.PermissionType;
+import com.attendance_tracker.misc.RoleType;
 import com.attendance_tracker.repository.PermissionRepository;
+import com.attendance_tracker.repository.RoleRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,42 +23,63 @@ import static org.junit.Assert.*;
 public class PermissionRepositoryIntegrationTest extends AbstractTest {
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private PermissionRepository permissionRepository;
 
     private Permission permission;
+    private Role role;
 
     @Before
     public void setUp() throws Exception {
-        permission = permissionRepository.save(MockData.createPermission(PermissionType.READ));
+        role = roleRepository.save(MockData.createRole(RoleType.OWNER));
+        permission = MockData.createPermission(PermissionType.READ);
+        permission.setRole(role);
+        permission = permissionRepository.save(permission);
     }
 
     @After
     public void tearDown() throws Exception {
         permissionRepository.deleteAll();
+        roleRepository.deleteAll();
     }
 
     @Test
-    @DisplayName("Save successful.")
+    @DisplayName("Create successful.")
     public void test1(){
-        final Permission permission = permissionRepository.save(MockData.createPermission(PermissionType.ALL));
+        Permission permission = MockData.createPermission(PermissionType.ALL);
+        permission.setRole(role);
+        permission = permissionRepository.save(permission);
         assertNotNull(permission);
     }
 
     @Test(expected = DataIntegrityViolationException.class)
-    @DisplayName("Save fails when permission type is missing.")
+    @DisplayName("Create fails when permission type is missing.")
     public void test2(){
-        permissionRepository.save((MockData.createPermission(null)));
+        Permission permission = MockData.createPermission(null);
+        permission.setRole(role);
+        permissionRepository.save(permission);
     }
 
     @Test(expected = DataIntegrityViolationException.class)
-    @DisplayName("Save fails when duplicate type is persisted.")
+    @DisplayName("Create fails when duplicate type is persisted.")
     public void test3(){
-        permissionRepository.save((MockData.createPermission(PermissionType.READ)));
+        Permission permission = MockData.createPermission(PermissionType.READ);
+        permission.setRole(role);
+        permissionRepository.save(permission);
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    @DisplayName("Create fails when permission with no role is persisted.")
+    public void test4(){
+        Permission permission = MockData.createPermission(PermissionType.ALL);
+        permissionRepository.save(permission);
     }
 
     @Test
     @DisplayName("Update successful.")
-    public void test4(){
+    public void test5(){
         permission.setType(PermissionType.ALL);
         final Permission updatedPermission = permissionRepository.save(permission);
         assertEquals(permission.getId(), updatedPermission.getId());
@@ -64,15 +88,15 @@ public class PermissionRepositoryIntegrationTest extends AbstractTest {
 
     @Test(expected = DataIntegrityViolationException.class)
     @DisplayName("Update fails when a null type is persisted.")
-    public void test5(){
+    public void test6(){
         permission.setType(null);
         permissionRepository.save(permission);
     }
 
     @Test
     @DisplayName("Delete successful")
-    public void test6(){
+    public void test7(){
         permissionRepository.delete(permission);
-        assertNull(permissionRepository.findById(permission.getId().toString()).orElse(null));
+        assertNull(permissionRepository.findById(permission.getId()).orElse(null));
     }
 }
