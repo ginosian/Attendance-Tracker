@@ -2,15 +2,17 @@ package com.attendance_tracker.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.io.Serializable;
 
 @Embeddable
-public class Time implements Serializable {
+public class Time {
 
+    // region PROPERTIES
     @Column(name = "hour")
     private Integer hour;
+
     @Column(name = "minute")
     private Integer minute;
+    // endregion
 
     // region GETTERS / SETTERS
     public Integer getHour() {
@@ -29,4 +31,7 @@ public class Time implements Serializable {
         this.minute = minute;
     }
     // endregion
+
+    //region EQUALS / HASHCODE / TOSTRING
+    //endregion
 }

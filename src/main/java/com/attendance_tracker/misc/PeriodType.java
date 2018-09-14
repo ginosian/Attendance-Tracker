@@ -1,7 +1,6 @@
 package com.attendance_tracker.misc;
 
 public enum PeriodType {
-
     WORK(true),
     LUNCH(false);
 

@@ -10,13 +10,13 @@ import java.util.List;
 
 public class StaticData {
 
-    public static List<Permission> createPermissions(){
+    public static List<Permission> createPermissions() {
         final Permission permissionAll = new Permission();
         permissionAll.setType(PermissionType.ALL);
         return Lists.newArrayList(permissionAll);
     }
 
-    public static List<Role> createRoles(){
+    public static List<Role> createRoles() {
         final Role roleCompanyAdmin = new Role();
         roleCompanyAdmin.setType(RoleType.COMPANY_ADMIN);
         final Role roleEmployee = new Role();

@@ -7,35 +7,32 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "Employee")
 @Table(name = "employee")
-public class Employee extends User{
+public class Employee extends User {
 
+    // region PROPERTIES
     @Column(name = "first_name")
     private String firstName;
 
     @Column(name = "last_name")
     private String lastName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "business_division_id",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "business_dvision_employee_fk")
-    )
-    private BusinessDivision businessDivision;
-
     @Embedded
     private ContactDetails contactDetails;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "business_division_id", nullable = false, foreignKey = @ForeignKey(name = "business_division_employee_fk"))
+    private BusinessDivision businessDivision;
 
     @Column(name = "joining_date")
     private LocalDateTime joiningDate;
 
     @Column(name = "leaving_date")
     private LocalDateTime leavingDate;
+    // endregion
 
     //region GETTERS / SETTERS
-
     public String getFirstName() {
         return firstName;
     }
@@ -60,14 +57,6 @@ public class Employee extends User{
         this.businessDivision = businessDivision;
     }
 
-    public ContactDetails getContactDetails() {
-        return contactDetails;
-    }
-
-    public void setContactDetails(ContactDetails contactDetails) {
-        this.contactDetails = contactDetails;
-    }
-
     public LocalDateTime getJoiningDate() {
         return joiningDate;
     }
@@ -83,11 +72,9 @@ public class Employee extends User{
     public void setLeavingDate(LocalDateTime leavingDate) {
         this.leavingDate = leavingDate;
     }
-
-
     //endregion
 
-    //region equals/hashcode/toString
+    //region EQUALS / HASHCODE / TOSTRING
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

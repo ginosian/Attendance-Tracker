@@ -1,20 +1,24 @@
 package com.attendance_tracker.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "BusinessDetails")
 @Table(name = "business_details")
-public class BusinessDetails extends AbstractEntity{
+public class BusinessDetails extends AbstractEntity {
 
+    // region PROPERTIES
     @OneToOne(optional = false)
+    @MapsId
+    @JoinColumn(foreignKey = @ForeignKey(name = "business_business_details_fk"))
     private Business business;
 
-    @OneToMany(cascade = CascadeType.REFRESH)
-    private Set<BusinessDivision> businessDivisions;
+    @OneToMany(mappedBy = "businessDetails", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BusinessDivision> businessDivisions = new HashSet<>();
+    // endregion
 
     // region GETTERS / SETTERS
-
     public Business getBusiness() {
         return business;
     }
@@ -30,8 +34,8 @@ public class BusinessDetails extends AbstractEntity{
     public void setBusinessDivisions(Set<BusinessDivision> businessDivisions) {
         this.businessDivisions = businessDivisions;
     }
-
     // endregion
 
-
+    //region EQUALS / HASHCODE / TOSTRING
+    //endregion
 }

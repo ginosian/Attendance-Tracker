@@ -2,21 +2,18 @@ package com.attendance_tracker.entity;
 
 import com.attendance_tracker.misc.TimeOffMinDuration;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 
-@Embeddable
-public class TimeOffPolicy {
+@Entity(name = "TimeOffPolicy")
+@Table(name = "time_off_policy")
+public class TimeOffPolicy extends AbstractEntity {
 
+    // region PROPERTIES
     @Column(name = "time_off_min_duration")
     @Enumerated(EnumType.STRING)
     private TimeOffMinDuration timeOffMinDuration;
-
-    @Column(name = "register_as_vacation_immediate")
-    private Boolean registerAsVacationImmediate;
+    // endregion
 
     // region GETTERS / SETTERS
     public TimeOffMinDuration getTimeOffMinDuration() {
@@ -26,13 +23,8 @@ public class TimeOffPolicy {
     public void setTimeOffMinDuration(TimeOffMinDuration timeOffMinDuration) {
         this.timeOffMinDuration = timeOffMinDuration;
     }
-
-    public Boolean getRegisterAsVacationImmediate() {
-        return registerAsVacationImmediate;
-    }
-
-    public void setRegisterAsVacationImmediate(Boolean registerAsVacationImmediate) {
-        this.registerAsVacationImmediate = registerAsVacationImmediate;
-    }
     // endregion
+
+    //region EQUALS / HASHCODE / TOSTRING
+    //endregion
 }

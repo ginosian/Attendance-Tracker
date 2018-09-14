@@ -7,12 +7,15 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Address {
 
-    @Column(name = "country")
+    // region PROPERTIES
+    @Column(name = "country", nullable = false)
     private String country;
 
-    @Column(name = "postcode")
+    @Column(name = "postcode", nullable = false)
     private String postcode;
+    // endregion
 
+    //region GETTERS / SETTERS
     public String getCountry() {
         return country;
     }
@@ -28,4 +31,8 @@ public class Address {
     public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
+    // endregion
+
+    //region EQUALS / HASHCODE / TOSTRING
+    //endregion
 }

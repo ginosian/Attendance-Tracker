@@ -13,29 +13,29 @@ import java.util.Set;
 
 public class MockData {
 
-    public static Business business(){
+    public static Business business() {
         final Business business = new Business();
         business.setName("Test Business");
         return business;
     }
 
-    public static BusinessDetails businessDetails(final Business business, final BusinessDivision... businessDivision){
+    public static BusinessDetails businessDetails(final Business business, final BusinessDivision... businessDivision) {
         final BusinessDetails businessDetails = new BusinessDetails();
         businessDetails.setBusiness(business);
         if (businessDivision != null) {
-            businessDetails.setBusinessDivisions(Sets.newHashSet(businessDivision));
+//            businessDetails.setBusinessDivisions(Sets.newHashSet(businessDivision));
         }
         return businessDetails;
     }
 
-    public static BusinessDivision businessDivision(final Set<Employee> employees, final Policy policy, final Set<Policy> individualPolicies, final ContactDetails contactDetails){
+    public static BusinessDivision businessDivision(final Set<Employee> employees, final Policy policy, final Set<Policy> individualPolicies, final ContactDetails contactDetails) {
         final BusinessDivision businessDivision = new BusinessDivision();
         businessDivision.setDefaultPolicy(policy);
         businessDivision.setContactDetails(contactDetails);
         return businessDivision;
     }
 
-    public static Employee employee(final BusinessDivision businessDivision, final ContactDetails contactDetails){
+    public static Employee employee(final BusinessDivision businessDivision, final ContactDetails contactDetails) {
         final Employee employee = new Employee();
         employee.setFirstName("Test employee");
         employee.setBusinessDivision(businessDivision);
@@ -43,13 +43,13 @@ public class MockData {
         return employee;
     }
 
-    public static Owner owner(final ContactDetails contactDetails){
+    public static Owner owner(final ContactDetails contactDetails) {
         final Owner owner = new Owner();
         owner.setContactDetails(contactDetails);
         return owner;
     }
 
-    public static ContactDetails contactDetails(final Address address){
+    public static ContactDetails contactDetails(final Address address) {
         final ContactDetails contactDetails = new ContactDetails();
         contactDetails.setEmail(contactDetails.hashCode() + "@" + contactDetails.hashCode() + ".com");
         contactDetails.setPhone(contactDetails.hashCode() + "123");
@@ -57,14 +57,14 @@ public class MockData {
         return contactDetails;
     }
 
-    public static Address address(){
+    public static Address address() {
         final Address address = new Address();
         address.setCountry(address.hashCode() + "country");
         address.setPostcode(address.hashCode() + "postalCode");
         return address;
     }
 
-    public static Policy policy(final BusinessDivision businessDivision, final AttendancePolicy attendancePolicy, final TimeOffPolicy timeOffPolicy, final VacationPolicy vacationPolicy){
+    public static Policy policy(final BusinessDivision businessDivision, final AttendancePolicy attendancePolicy, final TimeOffPolicy timeOffPolicy, final VacationPolicy vacationPolicy) {
         final Policy policy = new Policy();
         policy.setBusinessDivision(businessDivision);
         policy.setAttendancePolicy(attendancePolicy);
@@ -73,7 +73,7 @@ public class MockData {
         return policy;
     }
 
-    public static AttendancePolicy attendancePolicy(final Set<Period> ins, final Set<Period> outs){
+    public static AttendancePolicy attendancePolicy(final Set<Period> ins, final Set<Period> outs) {
         final AttendancePolicy attendancePolicy = new AttendancePolicy();
         attendancePolicy.setAttendanceCalculationType(AttendanceCalculationType.DAILY);
         attendancePolicy.setWorkingDaysPerWeek(5);
@@ -85,14 +85,13 @@ public class MockData {
         return attendancePolicy;
     }
 
-    public static TimeOffPolicy timeOffPolicy(){
+    public static TimeOffPolicy timeOffPolicy() {
         final TimeOffPolicy timeOffPolicy = new TimeOffPolicy();
-        timeOffPolicy.setRegisterAsVacationImmediate(false);
         timeOffPolicy.setTimeOffMinDuration(TimeOffMinDuration.HALF_DAY);
         return timeOffPolicy;
     }
 
-    public static VacationPolicy vacationPolicy(){
+    public static VacationPolicy vacationPolicy() {
         final VacationPolicy vacationPolicy = new VacationPolicy();
         vacationPolicy.setVacationPerDay(0.09);
         vacationPolicy.setVacationPerMonth(1.67);
@@ -101,7 +100,7 @@ public class MockData {
         return vacationPolicy;
     }
 
-    public static Period period(){
+    public static Period period() {
         final Time startTime = new Time();
         startTime.setHour(10);
         startTime.setMinute(0);
@@ -128,7 +127,7 @@ public class MockData {
         return period;
     }
 
-    public static Map<PeriodType, PeriodDetail> periods(){
+    public static Map<PeriodType, PeriodDetail> periods() {
         final Map<PeriodType, PeriodDetail> map = new EnumMap<>(PeriodType.class);
         final PeriodDetail workPeriodDetail = new PeriodDetail();
         workPeriodDetail.setPeriods(Sets.newHashSet(period()));
@@ -140,7 +139,7 @@ public class MockData {
         return map;
     }
 
-    public static Set<PeriodDetail> periodsSet(){
+    public static Set<PeriodDetail> periodsSet() {
         final PeriodDetail periodDetailWork = new PeriodDetail();
         periodDetailWork.setPeriodType(PeriodType.WORK);
         periodDetailWork.setPeriods(Sets.newHashSet(period()));

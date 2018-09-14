@@ -7,15 +7,18 @@ import javax.persistence.Embedded;
 @Embeddable
 public class ContactDetails {
 
-    @Column(name = "phone", unique = true)
+    // region PROPERTIES
+    @Column(name = "phone")
     private String phone;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     private String email;
 
     @Embedded
     private Address address;
+    // endregion
 
+    // region GETTERS / SETTERS
     public String getPhone() {
         return phone;
     }
@@ -39,4 +42,8 @@ public class ContactDetails {
     public void setAddress(Address address) {
         this.address = address;
     }
+    // endregion
+
+    //region EQUALS / HASHCODE / TOSTRING
+    //endregion
 }

@@ -1,19 +1,24 @@
 package com.attendance_tracker.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Entity
+@Entity(name = "Authority")
 @Table(name = "authority")
-public class Authority extends AbstractEntity{
+public class Authority extends AbstractEntity {
 
-    @OneToOne
+    // region PROPERTIES
+    @OneToOne(optional = false)
+    @MapsId
+    @JoinColumn(foreignKey = @ForeignKey(name = "user_authority_fk"))
     private User user;
 
-    @OneToOne
+    @OneToOne(optional = false)
+    @MapsId
+    @JoinColumn(foreignKey = @ForeignKey(name = "user_user_details_fk"))
     private UserDetails userDetails;
+    // endregion
 
+    //region GETTERS / SETTERS
     public User getUser() {
         return user;
     }
@@ -29,4 +34,8 @@ public class Authority extends AbstractEntity{
     public void setUserDetails(UserDetails userDetails) {
         this.userDetails = userDetails;
     }
+    // endregion
+
+    //region EQUALS / HASHCODE / TOSTRING
+    //endregion
 }

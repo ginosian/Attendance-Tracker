@@ -5,15 +5,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
+@Entity(name = "Business")
 @Table(name = "business")
 public class Business extends User {
 
+    // region PROPERTIES
     @Column(name = "name", nullable = false, unique = true)
     private String name;
+    // endregion
 
     //region GETTERS / SETTERS
-
     public String getName() {
         return name;
     }
@@ -21,9 +22,8 @@ public class Business extends User {
     public void setName(String name) {
         this.name = name;
     }
-
     // endregion
 
-    //region equals/hashcode/toString
+    //region EQUALS / HASHCODE / TOSTRING
     //endregion
 }

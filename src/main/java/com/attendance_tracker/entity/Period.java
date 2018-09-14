@@ -3,12 +3,12 @@ package com.attendance_tracker.entity;
 import com.attendance_tracker.misc.TimeBufferType;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "period")
-public class Period extends AbstractEntity implements Serializable {
+public class Period extends AbstractEntity {
 
+    // region PROPERTIES
     @AttributeOverrides({
             @AttributeOverride(name = "hour", column = @Column(name = "start_hour")),
             @AttributeOverride(name = "minute", column = @Column(name = "start_minute"))
@@ -45,8 +45,16 @@ public class Period extends AbstractEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private TimeBufferType endBufferType;
 
-    // region GETTERS / SETTERS
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "period_detail_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "period_detail_period_fk")
+    )
+    private PeriodDetail periodDetail;
+    // endregion
 
+    // region GETTERS / SETTERS
     public Time getStart() {
         return start;
     }
@@ -95,5 +103,15 @@ public class Period extends AbstractEntity implements Serializable {
         this.endBufferType = endBufferType;
     }
 
+    public PeriodDetail getPeriodDetail() {
+        return periodDetail;
+    }
+
+    public void setPeriodDetail(PeriodDetail periodDetail) {
+        this.periodDetail = periodDetail;
+    }
     // endregion
+
+    //region EQUALS / HASHCODE / TOSTRING
+    //endregion
 }

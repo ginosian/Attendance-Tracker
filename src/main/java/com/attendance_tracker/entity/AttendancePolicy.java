@@ -3,18 +3,20 @@ package com.attendance_tracker.entity;
 import com.attendance_tracker.misc.AttendanceCalculationType;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "AttendancePolicy")
 @Table(name = "attendance_policy")
-public class AttendancePolicy extends AbstractEntity{
+public class AttendancePolicy extends AbstractEntity {
 
+    // region PROPERTIES
     @Column(name = "attendance_calculation_type")
     @Enumerated(EnumType.STRING)
     private AttendanceCalculationType attendanceCalculationType;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<PeriodDetail> periods;
+    @OneToMany(mappedBy = "attendancePolicy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PeriodDetail> periods = new HashSet<>();
 
     @Column(name = "working_hours_day")
     private Integer workingHoursPerDay;
@@ -24,9 +26,9 @@ public class AttendancePolicy extends AbstractEntity{
 
     @Column(name = "working_days_week")
     private Integer workingDaysPerWeek;
+    // endregion
 
     // region GETTERS / SETTERS
-
     public AttendanceCalculationType getAttendanceCalculationType() {
         return attendanceCalculationType;
     }
@@ -66,8 +68,8 @@ public class AttendancePolicy extends AbstractEntity{
     public void setWorkingDaysPerWeek(Integer workingDaysPerWeek) {
         this.workingDaysPerWeek = workingDaysPerWeek;
     }
-
-
     // endregion
 
+    //region EQUALS / HASHCODE / TOSTRING
+    //endregion
 }

@@ -1,11 +1,14 @@
 package com.attendance_tracker.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Embeddable
-public class VacationPolicy {
+@Entity(name = "VacationPolicy")
+@Table(name = "vacation_policy")
+public class VacationPolicy extends AbstractEntity {
 
+    // region PROPERTIES
     @Column(name = "vacation_per_day")
     private Double vacationPerDay;
 
@@ -17,9 +20,9 @@ public class VacationPolicy {
 
     @Column(name = "vacation_per_year")
     private Double vacationPerYear;
+    // endregion
 
     // region GETTERS / SETTERS
-
     public Double getVacationPerDay() {
         return vacationPerDay;
     }
@@ -51,6 +54,8 @@ public class VacationPolicy {
     public void setVacationPerYear(Double vacationPerYear) {
         this.vacationPerYear = vacationPerYear;
     }
-
     // endregion
+
+    //region EQUALS / HASHCODE / TOSTRING
+    //endregion
 }

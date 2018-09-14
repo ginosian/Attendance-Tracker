@@ -4,30 +4,31 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "policy")
-public class Policy extends AbstractEntity{
+public class Policy extends AbstractEntity {
 
-    @OneToOne
-    private BusinessDivision businessDivision;
-
-    @OneToOne(cascade = CascadeType.ALL)
+    // region PROPERTIES
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @MapsId
+    @JoinColumn(foreignKey = @ForeignKey(name = "attendance_policy_policy_fk"))
     private AttendancePolicy attendancePolicy;
 
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @MapsId
+    @JoinColumn(foreignKey = @ForeignKey(name = "time_off_policy_policy_fk"))
     private TimeOffPolicy timeOffPolicy;
 
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @MapsId
+    @JoinColumn(foreignKey = @ForeignKey(name = "vacation_policy_policy_fk"))
     private VacationPolicy vacationPolicy;
 
+    @OneToOne(optional = false)
+    @MapsId
+    @JoinColumn(foreignKey = @ForeignKey(name = "business_division_policy_fk"))
+    private BusinessDivision businessDivision;
+    // endregion
+
     // region GETTERS / SETTERS
-
-    public BusinessDivision getBusinessDivision() {
-        return businessDivision;
-    }
-
-    public void setBusinessDivision(BusinessDivision businessDivision) {
-        this.businessDivision = businessDivision;
-    }
-
     public AttendancePolicy getAttendancePolicy() {
         return attendancePolicy;
     }
@@ -52,5 +53,15 @@ public class Policy extends AbstractEntity{
         this.vacationPolicy = vacationPolicy;
     }
 
+    public BusinessDivision getBusinessDivision() {
+        return businessDivision;
+    }
+
+    public void setBusinessDivision(BusinessDivision businessDivision) {
+        this.businessDivision = businessDivision;
+    }
     // endregion
+
+    //region EQUALS / HASHCODE / TOSTRING
+    //endregion
 }

@@ -7,27 +7,18 @@ import java.util.Set;
 
 @Entity
 @Table(name = "role")
-public class Role extends AbstractEntity{
+public class Role extends AbstractEntity {
 
-    @ManyToMany
-    @JoinTable(name = "role_permission",
-            joinColumns = {@JoinColumn(name = "role_id")},
-            inverseJoinColumns = {@JoinColumn(name = "permission_id")})
-    private Set<Permission> permissions;
-
+    // region PROPERTIES
     @Column(name = "type", nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
     private RoleType type;
 
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Permission> permissions;
+    // endregion
+
     //region GETTERS / SETTERS
-    public Set<Permission> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(Set<Permission> permissions) {
-        this.permissions = permissions;
-    }
-
     public RoleType getType() {
         return type;
     }
@@ -35,9 +26,17 @@ public class Role extends AbstractEntity{
     public void setType(RoleType type) {
         this.type = type;
     }
+
+    public Set<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
+    }
     //endregion
 
-    //region equals/hashcode/toString
+    //region EQUALS / HASHCODE / TOSTRING
     //endregion
 
 }

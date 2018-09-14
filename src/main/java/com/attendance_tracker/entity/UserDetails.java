@@ -4,10 +4,11 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "UserDetails")
 @Table(name = "user_details")
-public class UserDetails extends AbstractEntity{
+public class UserDetails extends AbstractEntity {
 
+    // region PROPERTIES
     @Column(name = "username", nullable = false)
     private String username;
 
@@ -34,12 +35,12 @@ public class UserDetails extends AbstractEntity{
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne
-    @MapsId(value = "creator_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id", nullable = false, foreignKey = @ForeignKey(name = "owner_user_details_fk"))
     private Owner creator;
+    // endregion
 
     //region GETTERS / SETTERS
-
     public String getUsername() {
         return username;
     }
@@ -103,9 +104,8 @@ public class UserDetails extends AbstractEntity{
     public void setCreator(Owner creator) {
         this.creator = creator;
     }
-
     //endregion
 
-    //region equals/hashcode/toString
+    //region EQUALS / HASHCODE / TOSTRING
     //endregion
 }

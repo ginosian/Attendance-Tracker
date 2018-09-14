@@ -2,22 +2,24 @@ package com.attendance_tracker.entity;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "AuthAccessToken")
 @Table(name = "auth_access_token")
-public class AuthAccessToken extends AbstractEntity{
+public class AuthAccessToken extends AbstractEntity {
 
-    @Column(name = "token")
+    // region PROPERTIES
+    @Column(name = "token", nullable = false, unique = true)
     private String token;
 
-    @OneToOne
-    @MapsId(value = "user_id")
+    @OneToOne(optional = false)
+    @MapsId
+    @JoinColumn(foreignKey = @ForeignKey(name = "user_auth_access_token_fk"))
     private Authority user;
 
     @Column(name = "description")
     private String description;
+    // endregion
 
     //region GETTERS / SETTERS
-
     public String getToken() {
         return token;
     }
@@ -41,10 +43,8 @@ public class AuthAccessToken extends AbstractEntity{
     public void setDescription(String description) {
         this.description = description;
     }
-
-
     // endregion
 
-    //region equals/hashcode/toString
+    //region EQUALS / HASHCODE / TOSTRING
     //endregion
 }

@@ -8,9 +8,15 @@ import javax.persistence.*;
 @Table(name = "permission")
 public class Permission extends AbstractEntity {
 
+    // region PROPERTIES
     @Column(name = "type", nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
     private PermissionType type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", nullable = false, foreignKey = @ForeignKey(name = "role_permission_fk"))
+    private Role role;
+    // endregion
 
     //region GETTERS / SETTERS
     public PermissionType getType() {
@@ -20,8 +26,16 @@ public class Permission extends AbstractEntity {
     public void setType(PermissionType type) {
         this.type = type;
     }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
     // endregion
 
-    //region equals/hashcode/toString
+    //region EQUALS / HASHCODE / TOSTRING
     //endregion
 }
