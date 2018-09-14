@@ -12,7 +12,7 @@ public class AbstractEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "id", unique = true, nullable = false, updatable = false, columnDefinition = "VARCHAR(100)")
+    @Column(name = "id", unique = true, nullable = false, updatable = false, columnDefinition = "CHAR(36)")
     protected String id;
 
     @Column(name = "created")

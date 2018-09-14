@@ -14,9 +14,6 @@ public class Employee extends User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Embedded
-    private ContactDetails contactDetails;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_division_id", nullable = false, foreignKey = @ForeignKey(name = "business_division_employee_fk"))
     private BusinessDivision businessDivision;
@@ -32,7 +29,6 @@ public class Employee extends User {
     public String getFirstName() {
         return firstName;
     }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -40,7 +36,6 @@ public class Employee extends User {
     public String getLastName() {
         return lastName;
     }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -48,7 +43,6 @@ public class Employee extends User {
     public BusinessDivision getBusinessDivision() {
         return businessDivision;
     }
-
     public void setBusinessDivision(BusinessDivision businessDivision) {
         this.businessDivision = businessDivision;
     }
@@ -56,7 +50,6 @@ public class Employee extends User {
     public LocalDateTime getJoiningDate() {
         return joiningDate;
     }
-
     public void setJoiningDate(LocalDateTime joiningDate) {
         this.joiningDate = joiningDate;
     }
@@ -64,11 +57,10 @@ public class Employee extends User {
     public LocalDateTime getLeavingDate() {
         return leavingDate;
     }
-
     public void setLeavingDate(LocalDateTime leavingDate) {
         this.leavingDate = leavingDate;
     }
-    //endregion
+    // endregion
 
     //region EQUALS / HASHCODE / TOSTRING
     //endregion

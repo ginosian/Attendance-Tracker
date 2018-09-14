@@ -10,7 +10,6 @@ public class BusinessDetails extends AbstractEntity {
 
     // region PROPERTIES
     @OneToOne(optional = false)
-    @MapsId
     @JoinColumn(foreignKey = @ForeignKey(name = "business_business_details_fk"))
     private Business business;
 

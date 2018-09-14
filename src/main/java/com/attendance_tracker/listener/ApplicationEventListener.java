@@ -1,5 +1,6 @@
 package com.attendance_tracker.listener;
 
+import com.attendance_tracker.entity.*;
 import com.attendance_tracker.repository.AbstractRepository;
 import com.attendance_tracker.repository.BusinessDivisionRepository;
 import org.slf4j.Logger;
@@ -9,6 +10,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ApplicationEventListener {
@@ -25,47 +29,69 @@ public class ApplicationEventListener {
 
     @EventListener({ContextRefreshedEvent.class})
     public void onContextRefreshedEvent() {
-//        final String[] profiles  = environment.getActiveProfiles();
-//        if(profiles.length > 0){
-//            return;
-//        }
-//        logger.info("Saving Permissions ...");
-//        final List<Permission> permissions = abstractRepository.saveAll(StaticData.createPermissions());
-//        logger.debug("Done saving Permissions.");
-//
-//        logger.info("Saving Roles ...");
-//        final List<Role> roles = abstractRepository.saveAll(
-//                StaticData.createRoles()
-//                        .stream()
-//                        .peek(role -> role.setPermissions(Sets.newHashSet(permissions)))
-//                        .collect(Collectors.toSet()));
-//        logger.debug("Done saving Roles.");
-//
-//        logger.info("Saving Business ...");
-//        final Business business = abstractRepository.save(MockData.business());
-//        logger.debug("Done saving Business.");
-//
-//        logger.info("Saving Business Division...");
-//        final BusinessDivision businessDivision = abstractRepository.save(MockData.businessDivision(null, null, null, null));
-//        logger.debug("Done saving Business Division.");
-//
-//        logger.info("Saving Business Details ...");
-//        final BusinessDetails businessDetails = abstractRepository.save(MockData.businessDetails(business, businessDivision));
-//        logger.debug("Done saving Business Details.");
-//
-//        logger.info("Saving Employee ...");
-//        final Employee employee = abstractRepository.save(MockData.employee(businessDivision, MockData.contactDetails(MockData.address())));
-//        logger.debug("Done saving Employee.");
-//
-//        logger.info("Saving Owner ...");
-//        final Owner owner = abstractRepository.save(MockData.owner(MockData.contactDetails(MockData.address())));
-//        logger.debug("Done Owner.");
-//
-//        logger.info("Saving Business Division with policy ...");
-//        final AttendancePolicy attendancePolicy = MockData.attendancePolicy(Sets.newHashSet(MockData.period()), Sets.newHashSet(MockData.period()));
-//        final TimeOffPolicy timeOffPolicy = MockData.timeOffPolicy();
-//        final VacationPolicy vacationPolicy = MockData.vacationPolicy();
-//        final Policy policy = abstractRepository.save(MockData.policy(businessDivision, attendancePolicy, timeOffPolicy, vacationPolicy));
-//        logger.debug("Done Business Division with policy.");
+        final String[] profiles  = environment.getActiveProfiles();
+        if(profiles.length > 0){
+            return;
+        }
+        logger.info("Saving Roles ...");
+        final List<Role> roles = abstractRepository.saveAll(StaticData.createRoles());
+        logger.debug("Done saving Roles.");
+
+        logger.info("Saving Permissions ...");
+        final List<Permission> permissions = abstractRepository.saveAll(StaticData.createPermissions().stream().peek(permission -> permission.setRole(roles.get(0))).collect(Collectors.toSet()));
+        logger.debug("Done saving Permissions.");
+
+        logger.info("Saving Business ...");
+        final Business business = abstractRepository.save(MockData.business());
+        logger.debug("Done saving Business.");
+
+        logger.info("Saving Business Details ...");
+        final BusinessDetails businessDetails = abstractRepository.save(MockData.businessDetails(business, null));
+        logger.debug("Done saving Business Details.");
+
+        logger.info("Saving Business Division...");
+        final BusinessDivision businessDivision = abstractRepository.save(MockData.businessDivision(businessDetails, null, null, null, MockData.contactDetails(MockData.address())));
+        logger.debug("Done saving Business Division.");
+
+        logger.info("Saving Employee ...");
+        final Employee employee = abstractRepository.save(MockData.employee(businessDivision, MockData.contactDetails(MockData.address())));
+        logger.debug("Done saving Employee.");
+
+        logger.info("Saving Owner ...");
+        final Owner owner = abstractRepository.save(MockData.owner(MockData.contactDetails(MockData.address())));
+        logger.debug("Done Owner.");
+
+        logger.info("Saving Attendance Policy ...");
+        AttendancePolicy attendancePolicy = abstractRepository.save(MockData.attendancePolicy());
+        logger.debug("Done Attendance Policy.");
+
+        logger.info("Saving Period Details ...");
+        final List<PeriodDetail> periodDetails = abstractRepository.saveAll(
+                MockData.periodsSet().stream().peek(periodDetail -> periodDetail.setAttendancePolicy(attendancePolicy)).collect(Collectors.toSet())
+        );
+        logger.debug("Done Period Details.");
+
+        logger.info("Saving Periods ...");
+        periodDetails.forEach(periodDetail -> {
+            final Period period = MockData.period();
+            period.setPeriodDetail(periodDetail);
+            abstractRepository.save(period);
+        });
+        logger.debug("Done Periods.");
+
+
+        logger.info("Saving Time Off Policy ...");
+        final TimeOffPolicy timeOffPolicy = abstractRepository.save(MockData.timeOffPolicy());
+        logger.debug("Done Time Off Policy.");
+
+        logger.info("Saving Vacation Policy ...");
+        final VacationPolicy vacationPolicy = abstractRepository.save(MockData.vacationPolicy());
+        logger.debug("Done Vacation Policy.");
+
+        logger.info("Saving Business Division with policy ...");
+        Policy policy = MockData.policy(businessDivision, attendancePolicy, timeOffPolicy, vacationPolicy);
+        businessDivision.setDefaultPolicy(policy);
+        abstractRepository.save(businessDivision);
+        logger.debug("Done Business Division with policy.");
     }
 }

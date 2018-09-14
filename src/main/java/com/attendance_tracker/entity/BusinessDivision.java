@@ -16,12 +16,11 @@ public class BusinessDivision extends AbstractEntity {
     @Embedded
     private ContactDetails contactDetails;
 
-    @OneToOne(optional = false)
-    @MapsId
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(foreignKey = @ForeignKey(name = "default_policy_business_division_fk"))
     private Policy defaultPolicy;
 
-    @OneToMany(mappedBy = "businessDivision", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "businessDivision")
     private Set<Employee> employees = new HashSet<>();
     // endregion
 

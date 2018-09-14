@@ -2,28 +2,24 @@ package com.attendance_tracker.entity;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "Policy")
 @Table(name = "policy")
 public class Policy extends AbstractEntity {
 
     // region PROPERTIES
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @MapsId
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(foreignKey = @ForeignKey(name = "attendance_policy_policy_fk"))
     private AttendancePolicy attendancePolicy;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @MapsId
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(foreignKey = @ForeignKey(name = "time_off_policy_policy_fk"))
     private TimeOffPolicy timeOffPolicy;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @MapsId
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(foreignKey = @ForeignKey(name = "vacation_policy_policy_fk"))
     private VacationPolicy vacationPolicy;
 
     @OneToOne(optional = false)
-    @MapsId
     @JoinColumn(foreignKey = @ForeignKey(name = "business_division_policy_fk"))
     private BusinessDivision businessDivision;
     // endregion

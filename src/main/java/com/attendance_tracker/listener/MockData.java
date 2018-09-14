@@ -16,6 +16,7 @@ public class MockData {
     public static Business business() {
         final Business business = new Business();
         business.setName("Test Business");
+        business.setContactDetails(contactDetails(address()));
         return business;
     }
 
@@ -23,15 +24,17 @@ public class MockData {
         final BusinessDetails businessDetails = new BusinessDetails();
         businessDetails.setBusiness(business);
         if (businessDivision != null) {
-//            businessDetails.setBusinessDivisions(Sets.newHashSet(businessDivision));
+            businessDetails.setBusinessDivisions(Sets.newHashSet(businessDivision));
         }
         return businessDetails;
     }
 
-    public static BusinessDivision businessDivision(final Set<Employee> employees, final Policy policy, final Set<Policy> individualPolicies, final ContactDetails contactDetails) {
+    public static BusinessDivision businessDivision(final BusinessDetails businessDetails, final Set<Employee> employees, final Policy policy, final Set<Policy> individualPolicies, final ContactDetails contactDetails) {
         final BusinessDivision businessDivision = new BusinessDivision();
-        businessDivision.setDefaultPolicy(policy);
+        businessDivision.setBusinessDetails(businessDetails);
         businessDivision.setContactDetails(contactDetails);
+        businessDivision.setDefaultPolicy(policy);
+        businessDivision.setEmployees(employees);
         return businessDivision;
     }
 
@@ -73,15 +76,12 @@ public class MockData {
         return policy;
     }
 
-    public static AttendancePolicy attendancePolicy(final Set<Period> ins, final Set<Period> outs) {
+    public static AttendancePolicy attendancePolicy() {
         final AttendancePolicy attendancePolicy = new AttendancePolicy();
         attendancePolicy.setAttendanceCalculationType(AttendanceCalculationType.DAILY);
         attendancePolicy.setWorkingDaysPerWeek(5);
         attendancePolicy.setWorkingHoursPerDay(8);
         attendancePolicy.setWorkingHoursPerWeek(40);
-//        attendancePolicy.setInPeriods(ins);
-//        attendancePolicy.setOutPeriods(outs);
-        attendancePolicy.setPeriods(periodsSet());
         return attendancePolicy;
     }
 
@@ -142,11 +142,9 @@ public class MockData {
     public static Set<PeriodDetail> periodsSet() {
         final PeriodDetail periodDetailWork = new PeriodDetail();
         periodDetailWork.setPeriodType(PeriodType.WORK);
-        periodDetailWork.setPeriods(Sets.newHashSet(period()));
 
         final PeriodDetail periodDetailLunch = new PeriodDetail();
         periodDetailLunch.setPeriodType(PeriodType.LUNCH);
-        periodDetailLunch.setPeriods(Sets.newHashSet(period()));
 
         return Sets.newHashSet(periodDetailWork, periodDetailLunch);
     }
