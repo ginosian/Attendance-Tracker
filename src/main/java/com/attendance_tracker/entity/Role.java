@@ -1,9 +1,13 @@
 package com.attendance_tracker.entity;
 
 import com.attendance_tracker.misc.RoleType;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,7 +20,7 @@ public class Role extends AbstractEntity  implements GrantedAuthority {
     private RoleType type;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Permission> permissions;
+    private Set<Permission> permissions = new HashSet<>();
     // endregion
 
     //region GETTERS / SETTERS
@@ -40,6 +44,39 @@ public class Role extends AbstractEntity  implements GrantedAuthority {
     //endregion
 
     //region EQUALS / HASHCODE / TOSTRING
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final Role that = (Role) o;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(type, that.type)
+                .append(permissions, that.permissions)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(type)
+                .append(permissions)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .appendSuper(super.toString())
+                .append("type", type)
+                .append("permissions", permissions)
+                .toString();
+    }
     //endregion
 
 }

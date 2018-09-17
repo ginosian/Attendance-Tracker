@@ -82,9 +82,9 @@ public class JwtTokenService {
 
     private Optional<String> getHeaderValueByName(String authenticationHeaderName, HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(authenticationHeaderName))
-                .map(h -> h.startsWith(authenticationHeaderValuePrefix)
-                        ? h.substring(authenticationHeaderValuePrefix.length())
-                        : h);
+                .map(header -> header.startsWith(authenticationHeaderValuePrefix)
+                        ? header.substring(authenticationHeaderValuePrefix.length())
+                        : header);
     }
 
     public Claims getClaimsFromToken(String signingKey, String token) {
@@ -97,7 +97,7 @@ public class JwtTokenService {
     }
 
     public Optional<String> getTokenValue(HttpServletRequest request) {
-        return Optional.ofNullable( //
+        return Optional.ofNullable(
                 getHeaderValueByName(JWT_HEADER, request)
                         .orElseGet(() -> getCookieValueByName(JWT_COOKIE, request)
                                 .orElse(null)));

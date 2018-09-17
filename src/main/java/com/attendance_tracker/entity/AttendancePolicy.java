@@ -1,6 +1,9 @@
 package com.attendance_tracker.entity;
 
 import com.attendance_tracker.misc.AttendanceCalculationType;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -71,5 +74,47 @@ public class AttendancePolicy extends AbstractEntity {
     // endregion
 
     //region EQUALS / HASHCODE / TOSTRING
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final AttendancePolicy that = (AttendancePolicy) o;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(attendanceCalculationType, that.attendanceCalculationType)
+                .append(periods, that.periods )
+                .append(workingHoursPerDay, that.workingHoursPerDay)
+                .append(workingHoursPerWeek, that.workingHoursPerWeek)
+                .append(workingDaysPerWeek, that.workingDaysPerWeek)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(attendanceCalculationType)
+                .append(periods)
+                .append(workingHoursPerDay)
+                .append(workingHoursPerWeek)
+                .append(workingDaysPerWeek)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .appendSuper(super.toString())
+                .append("attendanceCalculationType", attendanceCalculationType)
+                .append("periods ", periods)
+                .append("workingHoursPerDay", workingHoursPerDay)
+                .append("workingHoursPerWeek", workingHoursPerWeek)
+                .append("workingDaysPerWeek", workingDaysPerWeek)
+                .toString();
+    }
     //endregion
 }

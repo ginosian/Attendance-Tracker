@@ -1,5 +1,9 @@
 package com.attendance_tracker.entity;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import javax.persistence.*;
 
 @Entity(name = "Policy")
@@ -59,5 +63,44 @@ public class Policy extends AbstractEntity {
     // endregion
 
     //region EQUALS / HASHCODE / TOSTRING
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final Policy that = (Policy) o;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(attendancePolicy, that.attendancePolicy)
+                .append(timeOffPolicy, that.timeOffPolicy)
+                .append(vacationPolicy, that.vacationPolicy)
+                .append(businessDivision, that.businessDivision)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(attendancePolicy)
+                .append(timeOffPolicy)
+                .append(vacationPolicy)
+                .append(businessDivision)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .appendSuper(super.toString())
+                .append("attendancePolicy", attendancePolicy)
+                .append("timeOffPolicy", timeOffPolicy)
+                .append("vacationPolicy", vacationPolicy)
+                .append("businessDivision", businessDivision)
+                .toString();
+    }
     //endregion
 }

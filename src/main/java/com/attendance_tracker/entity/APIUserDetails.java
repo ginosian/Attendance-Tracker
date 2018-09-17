@@ -1,5 +1,8 @@
 package com.attendance_tracker.entity;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -146,5 +149,59 @@ public class APIUserDetails extends AbstractEntity implements UserDetails {
     // endregion
 
     //region EQUALS / HASHCODE / TOSTRING
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final APIUserDetails that = (APIUserDetails) o;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(username, that.username)
+                .append(passwordHash, that.passwordHash)
+                .append(accountNonExpired, that.accountNonExpired)
+                .append(accountNonLocked, that.accountNonLocked)
+                .append(credentialsNonExpired, that.credentialsNonExpired)
+                .append(enabled, that.enabled)
+                .append(roles, that.roles )
+                .append(user, that.user)
+                .append(creator, that.creator)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(username)
+                .append(passwordHash)
+                .append(accountNonExpired)
+                .append(accountNonLocked)
+                .append(credentialsNonExpired)
+                .append(enabled)
+                .append(roles)
+                .append(user)
+                .append(creator)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .appendSuper(super.toString())
+                .append("username", username)
+                .append("passwordHash", passwordHash)
+                .append("accountNonExpired", accountNonExpired)
+                .append("accountNonLocked", accountNonLocked)
+                .append("credentialsNonExpired", credentialsNonExpired)
+                .append("enabled", enabled)
+                .append("roles ", roles)
+                .append("user", user)
+                .append("creator", creator)
+                .toString();
+    }
     //endregion
 }

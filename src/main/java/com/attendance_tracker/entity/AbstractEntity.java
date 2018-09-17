@@ -1,9 +1,12 @@
 package com.attendance_tracker.entity;
 
-        import org.hibernate.annotations.GenericGenerator;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
 
-        import javax.persistence.*;
-        import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 public class AbstractEntity {
@@ -72,5 +75,41 @@ public class AbstractEntity {
     // endregion
 
     //region EQUALS / HASHCODE / TOSTRING
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final AbstractEntity that = (AbstractEntity) o;
+        return new EqualsBuilder()
+                .append(id, that.id)
+                .append(created, that.created)
+                .append(updated, that.updated)
+                .append(deleted, that.deleted)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(id)
+                .append(created)
+                .append(updated)
+                .append(deleted)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append(id)
+                .append(created)
+                .append(updated)
+                .append(deleted)
+                .toString();
+    }
     //endregion
 }
