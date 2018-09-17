@@ -1,6 +1,7 @@
 package com.attendance_tracker.client.api.impl;
 
 import com.attendance_tracker.client.InfoResource;
+import com.attendance_tracker.client.OwnerResource;
 import com.attendance_tracker.client.api.ApiClient;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -29,6 +30,7 @@ public class ApiClientImpl implements ApiClient {
     private final Client client;
 
     private final InfoResource infoResource;
+    private final OwnerResource ownerResource;
 
     public ApiClientImpl(final String apiUrl) {
         final ObjectMapper mapper = new ObjectMapper();
@@ -50,12 +52,17 @@ public class ApiClientImpl implements ApiClient {
         final WebTarget rootTarget = client.target(BASE_URL);
 
         infoResource = new InfoResource(client, rootTarget, mapper);
-
+        ownerResource = new OwnerResource(client, rootTarget, mapper);
     }
 
     @Override
     public InfoResource info() {
         return infoResource;
+    }
+
+    @Override
+    public OwnerResource owner() {
+        return ownerResource;
     }
 
     @Override

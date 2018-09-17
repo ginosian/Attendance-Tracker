@@ -96,8 +96,8 @@ public class ApplicationEventListener {
         logger.debug("Done Business Division with policy.");
 
         logger.info("Saving User Details ...");
-        final UserDetails employeeDetails = abstractRepository.save(MockData.userDetails(Sets.newHashSet(roles), employee, owner));
-        final UserDetails ownerDetails = abstractRepository.save(MockData.userDetails(Sets.newHashSet(roles), owner, owner));
+        final APIUserDetails employeeDetails = abstractRepository.save(MockData.userDetails(Sets.newHashSet(roles), employee, owner));
+        final APIUserDetails ownerDetails = abstractRepository.save(MockData.userDetails(Sets.newHashSet(roles), owner, owner));
         logger.debug("Done User Details.");
 
         logger.info("Saving Authority ...");

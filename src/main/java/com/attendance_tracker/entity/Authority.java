@@ -13,7 +13,7 @@ public class Authority extends AbstractEntity {
 
     @OneToOne(optional = false)
     @JoinColumn(foreignKey = @ForeignKey(name = "user_user_details_fk"))
-    private UserDetails userDetails;
+    private APIUserDetails APIUserDetails;
     // endregion
 
     //region GETTERS / SETTERS
@@ -25,12 +25,12 @@ public class Authority extends AbstractEntity {
         this.user = user;
     }
 
-    public UserDetails getUserDetails() {
-        return userDetails;
+    public APIUserDetails getAPIUserDetails() {
+        return APIUserDetails;
     }
 
-    public void setUserDetails(UserDetails userDetails) {
-        this.userDetails = userDetails;
+    public void setAPIUserDetails(APIUserDetails APIUserDetails) {
+        this.APIUserDetails = APIUserDetails;
     }
     // endregion
 

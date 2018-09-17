@@ -1,13 +1,14 @@
 package com.attendance_tracker.entity;
 
 import com.attendance_tracker.misc.RoleType;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "role")
-public class Role extends AbstractEntity {
+public class Role extends AbstractEntity  implements GrantedAuthority {
 
     // region PROPERTIES
     @Column(name = "type", nullable = false, unique = true)
@@ -22,15 +23,17 @@ public class Role extends AbstractEntity {
     public RoleType getType() {
         return type;
     }
-
     public void setType(RoleType type) {
         this.type = type;
+    }
+    @Override
+    public String getAuthority() {
+        return this.type.name();
     }
 
     public Set<Permission> getPermissions() {
         return permissions;
     }
-
     public void setPermissions(Set<Permission> permissions) {
         this.permissions = permissions;
     }

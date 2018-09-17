@@ -1,6 +1,7 @@
 package com.attendance_tracker.rest.config;
 
 import com.attendance_tracker.rest.endpoint.impl.InfoEndpointImpl;
+import com.attendance_tracker.rest.endpoint.impl.OwnerEndpointImpl;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.message.GZipEncoder;
@@ -30,5 +31,6 @@ public class JerseyConfig extends ResourceConfig{
         EncodingFilter.enableFor(this, GZipEncoder.class);
         // Endpoints
         register(InfoEndpointImpl.class);
+        register(OwnerEndpointImpl.class);
     }
 }

@@ -9,21 +9,18 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 
-/**
- * @author Marta Ginosyan<br/>
- */
-public class InfoResource extends AbstractApiResource {
+public class OwnerResource extends AbstractApiResource {
 
     private final Logger logger = LoggerFactory.getLogger(InfoResource.class);
 
     private ObjectMapper objectMapper;
 
-    public InfoResource(Client client, WebTarget rootTarget, ObjectMapper objectMapper) {
+    public OwnerResource(Client client, WebTarget rootTarget, ObjectMapper objectMapper) {
         super(client, rootTarget, "");
         this.objectMapper = objectMapper;
     }
 
     public InfoDto info() {
-        return doGet("/info", InfoDto.class);
+        return doGet("/owner", InfoDto.class);
     }
 }

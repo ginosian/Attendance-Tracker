@@ -1,12 +1,16 @@
 package com.attendance_tracker.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "UserDetails")
 @Table(name = "user_details")
-public class UserDetails extends AbstractEntity {
+public class APIUserDetails extends AbstractEntity implements UserDetails {
 
     // region PROPERTIES
     @Column(name = "username", nullable = false)
@@ -108,6 +112,38 @@ public class UserDetails extends AbstractEntity {
         this.creator = creator;
     }
     //endregion
+
+    // region IMPLEMENTATIONS
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.accountNonExpired == null ? false : this.accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.accountNonLocked == null ? false : this.accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.credentialsNonExpired == null ? false : this.credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled == null ? false : this.enabled;
+    }
+    // endregion
 
     //region EQUALS / HASHCODE / TOSTRING
     //endregion
