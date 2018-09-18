@@ -1,16 +1,15 @@
 package com.attendance_tracker.service.token;
 
-import com.attendance_tracker.entity.ApiAuthAccessToken;
-import com.attendance_tracker.service.token.exception.TokenServiceException;
-import com.attendance_tracker.service.token.model.TokenCreationRequest;
-import com.attendance_tracker.service.token.model.TokenExistenceCheckRequest;
-import com.attendance_tracker.service.token.model.TokenMarkAsUsedRequest;
+import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenCreationRequest;
+import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenRefreshRequest;
 
 public interface TokenService {
 
-    ApiAuthAccessToken createNewToken(TokenCreationRequest tokenCreationRequest);
+    String createNewToken(ApiAuthAccessTokenCreationRequest request);
 
-    ApiAuthAccessToken getExistingToken(TokenExistenceCheckRequest tokenExistenceCheckRequest) throws TokenServiceException;
+    String refreshToken(ApiAuthAccessTokenRefreshRequest request);
 
-    ApiAuthAccessToken demarkTokenAsUsed(TokenMarkAsUsedRequest tokenDemarcationAsUsedRequest) throws TokenServiceException;
+    String getUsernameFromToken(String token);
+
+    String getPasswordHashFromToken(String token);
 }

@@ -3,7 +3,7 @@ package com.attendance_tracker.facade.authentication.impl;
 
 import com.attendance_tracker.entity.APIUserDetail;
 import com.attendance_tracker.entity.ApiAuthAccessToken;
-import com.attendance_tracker.facade.authentication.AuthenticationService;
+import com.attendance_tracker.facade.authentication.AuthenticationFacade;
 import com.attendance_tracker.facade.authentication.exception.AuthException;
 import com.attendance_tracker.facade.authentication.model.AuthenticationRequest;
 import com.attendance_tracker.facade.authentication.model.AuthenticationResponse;
@@ -22,9 +22,9 @@ import org.springframework.stereotype.Service;
 import static org.springframework.util.Assert.notNull;
 
 @Service
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class AuthenticationFacadeImpl implements AuthenticationFacade {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationFacadeImpl.class);
 
     @Autowired
     private ApiUserDetailService apiUserDetailService;
@@ -78,6 +78,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         apiAuthAccessTokenCreationRequest.setUserDetail(userDetail);
         apiAuthAccessTokenCreationRequest.setDescription(description);
         apiAuthAccessTokenCreationRequest.setTokenType(isRememberMe ? TokenType.LOGIN_REMEMBER_ME : TokenType.LOGIN);
+        apiAuthAccessTokenCreationRequest.setActive(true);
         return apiAuthAccessTokenCreationRequest;
     }
 }

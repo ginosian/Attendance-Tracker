@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -20,18 +19,20 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static org.springframework.util.Assert.hasText;
+import static org.springframework.util.Assert.notEmpty;
+import static org.springframework.util.Assert.notNull;
+
 @Service
 @PropertySource("classpath:application-security.properties")
 public class JwtTokenService {
 
     private final static Logger logger = LoggerFactory.getLogger(JwtTokenService.class);
+
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
     @Value("${security.jwt.token.secret}")
     private String JWT_TOKEN_SECRET;
-
-    @Value("${security.jwt.expiration.seconds:3600}")
-    private int JWT_EXPIRATION_SECONDS = 3600;
 
     @Value("${security.jwt.header:Authorization}")
     private String JWT_HEADER;
@@ -39,20 +40,7 @@ public class JwtTokenService {
     @Value("${security.jwt.cookie:SO_AUTH_TOKEN}")
     private String JWT_COOKIE;
 
-    @Value("${security.jwt.calim.key.username:username}")
-    private String JWT_CALIM_KEY_USERNAME;
-
-    @Value("${security.jwt.calim.key.created:created}")
-    private String JWT_CALIM_KEY_CREATED;
-
     private String authenticationHeaderValuePrefix = "Bearer ";
-
-    public Map<String, Object> assembleWebClaims(final UserDetails userDetails) {
-        final Map<String, Object> claims = new HashMap<>();
-        final String username = userDetails.getUsername();
-        claims.put(JWT_CALIM_KEY_USERNAME, username);
-        return claims;
-    }
 
     //header
     //"alg": "HS256",
@@ -65,74 +53,75 @@ public class JwtTokenService {
     //  base64UrlEncode(payload),
     //  secret)
 
-    public String createToken(Map<String, Object> claimsMap, String signingKey, int expirationSecs) {
-        final Date createdDate = (Date) claimsMap.computeIfAbsent(JWT_CALIM_KEY_CREATED, k -> getCurrentDate());
-        final Date expirationDate = new Date(1000L * expirationSecs + createdDate.getTime());
-
-        String encodedKey = TextCodec.BASE64.encode(signingKey);
+    public String createToken(final Map<String, Object> claimsMap, final Date expirationDate) {
+        notEmpty(claimsMap, "claims map can not be null or empty.");
+        notNull(expirationDate, "expirationDate can not be null");
+        final String encodedKey = TextCodec.BASE64.encode(JWT_TOKEN_SECRET);
         return Jwts.builder()
-                .setHeaderParam("typ", "JWT")
+                .setHeader(assembleHeader())
                 .setClaims(claimsMap)
                 .setExpiration(expirationDate)
                 .signWith(signatureAlgorithm, encodedKey)
                 .compact();
     }
 
-    public String createWebToken(Map<String, Object> claimsMap) {
-        return createToken(claimsMap, JWT_TOKEN_SECRET, JWT_EXPIRATION_SECONDS);
+    public String getClaim(final String token, final String key) {
+        hasText(token, "token can not be null or empty.");
+        hasText(key, "key can not be null or empty.");
+        final Claims claims = getClaims(token);
+        return getClaimValueFromToken(claims, key);
     }
 
-    public Optional<String> getCookieValueByName(String name, HttpServletRequest request) {
-        return request.getCookies() != null ? Stream.of(request.getCookies()).filter(c -> c.getName().equals(name))
+    public Optional<String> getCookie(final HttpServletRequest request, final String cookieKey) {
+        notNull(request, "request can not be null.");
+        hasText(cookieKey, "cookieKey can not be null or empty.");
+        return request.getCookies() != null ? Stream.of(request.getCookies()).filter(c -> c.getName().equals(cookieKey))
                 .map(Cookie::getValue).findFirst() : Optional.empty();
     }
 
-    private Date getCurrentDate() {
-        return new Date();
-    }
-
-    private Optional<String> getHeaderValueByName(String authenticationHeaderName, HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(authenticationHeaderName))
+    private Optional<String> getHeader(final HttpServletRequest request, final String headerKey) {
+        notNull(request, "request can not be null.");
+        hasText(headerKey, "headerKey can not be null or empty.");
+        return Optional.ofNullable(request.getHeader(headerKey))
                 .map(header -> header.startsWith(authenticationHeaderValuePrefix)
                         ? header.substring(authenticationHeaderValuePrefix.length())
                         : header);
     }
 
-    public Claims getClaimsFromToken(String signingKey, String token) {
-        String encodedKey = TextCodec.BASE64.encode(signingKey);
-        return Jwts.parser().setSigningKey(encodedKey).parseClaimsJws(token).getBody();
-    }
-
-    public String getClaimValueFromToken(Claims claims, String key) {
-        return claims.get(key, String.class);
-    }
-
-    public Optional<String> getTokenValue(HttpServletRequest request) {
+    public Optional<String> getToken(final HttpServletRequest request) {
+        notNull(request, "request can not be null.");
         return Optional.ofNullable(
-                getHeaderValueByName(JWT_HEADER, request)
-                        .orElseGet(() -> getCookieValueByName(JWT_COOKIE, request)
+                getHeader(request, JWT_HEADER)
+                        .orElseGet(() -> getCookie(request, JWT_COOKIE)
                                 .orElse(null)));
     }
 
-
-    public String getUsernameValueFromToken(String token) {
-            Claims claims = getClaimsFromToken(JWT_TOKEN_SECRET, token);
-            return getClaimValueFromToken(claims, JWT_CALIM_KEY_USERNAME);
+    public Claims getClaims(final String token) {
+        hasText(token, "token can not be null or empty.");
+        final String encodedKey = TextCodec.BASE64.encode(JWT_TOKEN_SECRET);
+        return Jwts.parser().setSigningKey(encodedKey).parseClaimsJws(token).getBody();
     }
 
-    public String refreshWebToken(String token) {
-        String refreshedToken;
-        final Claims claims = getClaimsFromToken(JWT_TOKEN_SECRET, token);
-        claims.remove(JWT_CALIM_KEY_CREATED);
-        refreshedToken = createWebToken(claims);
-        return refreshedToken;
-    }
-
-    public void setWebTokenCookie(String token, HttpServletResponse response) {
-        Cookie cookie = new Cookie(JWT_COOKIE, token);
-        cookie.setMaxAge(JWT_EXPIRATION_SECONDS);
+    public void setCookie(final String token, final HttpServletResponse response, int expiry) {
+        hasText(token, "token can not be null or empty.");
+        notNull(response, "response can not be null.");
+        final Cookie cookie = new Cookie(JWT_COOKIE, token);
+        cookie.setMaxAge(expiry);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
+    }
+
+    private Map<String, Object> assembleHeader(){
+        final Map<String, Object> headerParamsMap = new HashMap<>();
+        headerParamsMap.put("alg", "HS256");
+        headerParamsMap.put("typ", "JWT");
+        return headerParamsMap;
+    }
+
+    private String getClaimValueFromToken(final Claims claims, final String key) {
+        notNull(claims, "claims can not be null.");
+        hasText(key, "key can not be null or empty.");
+        return claims.get(key, String.class);
     }
 }

@@ -23,6 +23,9 @@ public class ApiAuthAccessToken extends AbstractEntity {
     @Column(name = "expires")
     private LocalDateTime expires;
 
+    @Column(name = "active", nullable = false)
+    private Boolean active;
+
     @OneToOne(optional = false)
     @JoinColumn(foreignKey = @ForeignKey(name = "user_auth_access_token_fk"))
     private Authority user;
@@ -51,6 +54,13 @@ public class ApiAuthAccessToken extends AbstractEntity {
     }
     public void setExpires(LocalDateTime expires) {
         this.expires = expires;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Authority getUser() {

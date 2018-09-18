@@ -134,7 +134,7 @@ public class APIUserDetail extends AbstractEntity implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return passwordHash;
     }
 
     @Override

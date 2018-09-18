@@ -7,6 +7,7 @@ public class ApiAuthAccessTokenCreationRequest {
 
     private APIUserDetail userDetail;
     private TokenType tokenType;
+    private boolean isActive;
     private String description;
 
     public APIUserDetail getUserDetail() {
@@ -23,6 +24,14 @@ public class ApiAuthAccessTokenCreationRequest {
 
     public void setTokenType(TokenType tokenType) {
         this.tokenType = tokenType;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public String getDescription() {

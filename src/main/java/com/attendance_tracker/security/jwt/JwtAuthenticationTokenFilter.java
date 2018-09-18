@@ -1,9 +1,11 @@
 package com.attendance_tracker.security.jwt;
 
 import com.attendance_tracker.security.AuthorityDetails;
+import com.attendance_tracker.service.token.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,9 +27,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private final static Logger logger = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
 
     @Autowired
+    private TokenService tokenService;
+
+    @Autowired
     private JwtTokenService jwtTokenService;
 
     @Autowired
+    @Qualifier("api_user_detail_service")
     private UserDetailsService userDetailsService;
 
     @Override
@@ -36,9 +42,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
-            Optional<String> tokenValue = jwtTokenService.getTokenValue(request);
+            Optional<String> tokenValue = jwtTokenService.getToken(request);
             tokenValue.ifPresent(token -> {
-                final String username = jwtTokenService.getUsernameValueFromToken(token);
+                final String username = tokenService.getUsernameFromToken(token);
                 hasText(username, "username from token can not be null or empty");
                 final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 notNull(userDetails, "user_detail details was not fount by username.");

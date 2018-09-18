@@ -1,7 +1,7 @@
 package com.attendance_tracker.repository.integration;
 
 import com.attendance_tracker.AbstractTest;
-import com.attendance_tracker.repository.UserDetailsRepository;
+import com.attendance_tracker.repository.APIUserDetailRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class APIUserDetailRepositoryTest extends AbstractTest {
 
     @Autowired
-    private UserDetailsRepository userDetailsRepository;
+    private APIUserDetailRepository APIUserDetailRepository;
 
     @Before
     public void setUp() throws Exception {

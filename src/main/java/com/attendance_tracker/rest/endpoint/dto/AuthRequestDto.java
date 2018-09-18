@@ -2,18 +2,17 @@ package com.attendance_tracker.rest.endpoint.dto;
 
 public class AuthRequestDto {
 
-    private String email;
+    private String username;
     private String password;
     private Boolean rememberMe;
-    private String userAgent;
-    private String remoteIP;
+    private String description;
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -32,19 +31,11 @@ public class AuthRequestDto {
         this.rememberMe = rememberMe;
     }
 
-    public String getUserAgent() {
-        return userAgent;
+    public String getDescription() {
+        return description;
     }
 
-    public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
-    }
-
-    public String getRemoteIP() {
-        return remoteIP;
-    }
-
-    public void setRemoteIP(String remoteIP) {
-        this.remoteIP = remoteIP;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

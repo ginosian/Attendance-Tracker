@@ -4,6 +4,4 @@ public class TokenAuthenticationRequest {
 
     private String token;
 
-    private String userAgent;
-
 }

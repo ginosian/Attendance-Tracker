@@ -6,7 +6,7 @@ import com.attendance_tracker.facade.authentication.model.AuthenticationRequest;
 import com.attendance_tracker.facade.authentication.model.AuthenticationResponse;
 import com.attendance_tracker.facade.authentication.model.TokenAuthenticationRequest;
 
-public interface AuthenticationService {
+public interface AuthenticationFacade {
 
     AuthenticationResponse authenticateByCredentials(AuthenticationRequest request) throws AuthException;
 
