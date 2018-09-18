@@ -104,12 +104,12 @@ public class ApplicationEventListener {
         ownerDetails = abstractRepository.save(ownerDetails);
         logger.debug("Done User Details.");
 
-        logger.info("Saving Authority ...");
-        Authority authorityEmployee = MockData.authority(employee, employeeDetails);
-        authorityEmployee = abstractRepository.save(authorityEmployee);
-        Authority authorityOwner = MockData.authority(owner, ownerDetails);
-        authorityOwner = abstractRepository.save(authorityOwner);
-        logger.debug("Done Authority.");
+//        logger.info("Saving Authority ...");
+//        Authority authorityEmployee = MockData.authority(employee, employeeDetails);
+//        authorityEmployee = abstractRepository.save(authorityEmployee);
+//        Authority authorityOwner = MockData.authority(owner, ownerDetails);
+//        authorityOwner = abstractRepository.save(authorityOwner);
+//        logger.debug("Done Authority.");
 
 //        logger.info("Saving Auth Access Token ...");
 //        final ApiAuthAccessToken apiAuthAccessTokenEmployee = abstractRepository.save(MockData.authAccessToken(authorityEmployee));

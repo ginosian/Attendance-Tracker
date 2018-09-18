@@ -2,9 +2,6 @@ package com.attendance_tracker.entity;
 
 
 import com.attendance_tracker.misc.PeriodType;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -54,38 +51,38 @@ public class PeriodDetail extends AbstractEntity {
     // endregion
 
     //region EQUALS / HASHCODE / TOSTRING
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final PeriodDetail that = (PeriodDetail) o;
-        return new EqualsBuilder()
-                .appendSuper(super.equals(o))
-                .append(periodType, that.periodType)
-                .append(periods, that.periods)
-                .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .appendSuper(super.hashCode())
-                .append(periodType)
-                .append(periods)
-                .toHashCode();
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .appendSuper(super.toString())
-                .append("periodType", periodType)
-                .append("periods", periods)
-                .toString();
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) {
+//            return true;
+//        }
+//        if (o == null || getClass() != o.getClass()) {
+//            return false;
+//        }
+//        final PeriodDetail that = (PeriodDetail) o;
+//        return new EqualsBuilder()
+//                .appendSuper(super.equals(o))
+//                .append(periodType, that.periodType)
+//                .append(periods, that.periods)
+//                .isEquals();
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return new HashCodeBuilder(17, 37)
+//                .appendSuper(super.hashCode())
+//                .append(periodType)
+//                .append(periods)
+//                .toHashCode();
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return new ToStringBuilder(this)
+//                .appendSuper(super.toString())
+//                .append("periodType", periodType)
+//                .append("periods", periods)
+//                .toString();
+//    }
     //endregion
 }

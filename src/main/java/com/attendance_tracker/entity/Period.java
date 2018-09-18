@@ -1,9 +1,6 @@
 package com.attendance_tracker.entity;
 
 import com.attendance_tracker.misc.TimeBufferType;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 
@@ -116,50 +113,50 @@ public class Period extends AbstractEntity {
     // endregion
 
     //region EQUALS / HASHCODE / TOSTRING
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final Period that = (Period) o;
-        return new EqualsBuilder()
-                .appendSuper(super.equals(o))
-                .append(start, that.start)
-                .append(end, that.end)
-                .append(startBuffer, that.startBuffer)
-                .append(startBufferType, that.startBufferType)
-                .append(endBuffer, that.endBuffer)
-                .append(endBufferType, that.endBufferType)
-                .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .appendSuper(super.hashCode())
-                .append(start)
-                .append(end)
-                .append(startBuffer)
-                .append(startBufferType)
-                .append(endBuffer)
-                .append(endBufferType)
-                .toHashCode();
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .appendSuper(super.toString())
-                .append("start", start)
-                .append("end", end)
-                .append("startBuffer", startBuffer)
-                .append("startBufferType", startBufferType)
-                .append("endBuffer", endBuffer)
-                .append("endBufferType", endBufferType)
-                .toString();
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) {
+//            return true;
+//        }
+//        if (o == null || getClass() != o.getClass()) {
+//            return false;
+//        }
+//        final Period that = (Period) o;
+//        return new EqualsBuilder()
+//                .appendSuper(super.equals(o))
+//                .append(start, that.start)
+//                .append(end, that.end)
+//                .append(startBuffer, that.startBuffer)
+//                .append(startBufferType, that.startBufferType)
+//                .append(endBuffer, that.endBuffer)
+//                .append(endBufferType, that.endBufferType)
+//                .isEquals();
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return new HashCodeBuilder(17, 37)
+//                .appendSuper(super.hashCode())
+//                .append(start)
+//                .append(end)
+//                .append(startBuffer)
+//                .append(startBufferType)
+//                .append(endBuffer)
+//                .append(endBufferType)
+//                .toHashCode();
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return new ToStringBuilder(this)
+//                .appendSuper(super.toString())
+//                .append("start", start)
+//                .append("end", end)
+//                .append("startBuffer", startBuffer)
+//                .append("startBufferType", startBufferType)
+//                .append("endBuffer", endBuffer)
+//                .append("endBufferType", endBufferType)
+//                .toString();
+//    }
     //endregion
 }

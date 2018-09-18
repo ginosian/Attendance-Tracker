@@ -150,26 +150,13 @@ public class MockData {
         return Sets.newHashSet(periodDetailWork, periodDetailLunch);
     }
 
-    public static Authority authority(final User user, final APIUserDetail APIUserDetail){
-        final Authority authority = new Authority();
-        authority.setUser(user);
-        authority.setAPIUserDetail(APIUserDetail);
-        return authority;
-    }
-
     public static APIUserDetail userDetails(final Set<Role> roles, final User user, final Owner creator){
-        final APIUserDetail APIUserDetail = new APIUserDetail();
-        APIUserDetail.setPasswordHash("password");
-        APIUserDetail.setRoles(roles);
-        APIUserDetail.setUser(user);
-        APIUserDetail.setCreator(creator);
-        return APIUserDetail;
-    }
-
-    public static ApiAuthAccessToken authAccessToken(final Authority authority){
-        final ApiAuthAccessToken apiAuthAccessToken = new ApiAuthAccessToken();
-        apiAuthAccessToken.setToken(String.valueOf(apiAuthAccessToken.hashCode()));
-        apiAuthAccessToken.setUser(authority);
-        return apiAuthAccessToken;
+        final APIUserDetail apiUserDetail = new APIUserDetail();
+        apiUserDetail.setPasswordHash("password");
+        apiUserDetail.setRoles(roles);
+        apiUserDetail.setUser(user);
+        apiUserDetail.setCreator(creator);
+        apiUserDetail.setApproved(true);
+        return apiUserDetail;
     }
 }

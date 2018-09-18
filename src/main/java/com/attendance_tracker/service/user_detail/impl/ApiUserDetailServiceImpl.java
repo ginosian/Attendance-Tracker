@@ -17,7 +17,7 @@ public class ApiUserDetailServiceImpl implements ApiUserDetailService {
 
     @Override
     public APIUserDetail loadUserByUsername(String username) throws UsernameNotFoundException {
-        return apiUserDetailRepository.findByUsernameAndDeletedNull(username);
+        return apiUserDetailRepository.findByUsernameAndDeletedFalse(username);
     }
 
     @Override
