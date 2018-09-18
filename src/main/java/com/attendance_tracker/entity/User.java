@@ -16,25 +16,14 @@ public class User extends AbstractEntity {
     @Embedded
     private ContactDetails contactDetails;
 
-    @Column(name = "approved")
-    private Boolean approved;
     // endregion
 
     // region GETTERS / SETTERS
     public ContactDetails getContactDetails() {
         return contactDetails;
     }
-
     public void setContactDetails(ContactDetails contactDetails) {
         this.contactDetails = contactDetails;
-    }
-
-    public Boolean getApproved() {
-        return approved;
-    }
-
-    public void setApproved(Boolean approved) {
-        this.approved = approved;
     }
     // endregion
 
@@ -51,7 +40,6 @@ public class User extends AbstractEntity {
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
                 .append(contactDetails, that.contactDetails)
-                .append(approved, that.approved)
                 .isEquals();
     }
 
@@ -60,7 +48,6 @@ public class User extends AbstractEntity {
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
                 .append(contactDetails)
-                .append(approved)
                 .toHashCode();
     }
 
@@ -69,7 +56,6 @@ public class User extends AbstractEntity {
         return new ToStringBuilder(this)
                 .appendSuper(super.toString())
                 .append("contactDetails", contactDetails)
-                .append("approved", approved)
                 .toString();
     }
     //endregion

@@ -9,12 +9,12 @@ public class PasswordHashHelperComponent {
 
     private static final int LOG_ROUNDS = 12;
 
-    public String hashPassword(String plainPassword) {
-        String salt = BCrypt.gensalt(LOG_ROUNDS);
-        return BCrypt.hashpw(plainPassword, salt);
+    public Boolean isPasswordCorrect(String plainPassword) {
+        return BCrypt.checkpw(plainPassword, hashPassword(plainPassword));
     }
 
-    public Boolean isPasswordCorrect(String plainPassword, String hashedPassword) {
-        return BCrypt.checkpw(plainPassword, hashedPassword);
+    private String hashPassword(String plainPassword) {
+        String salt = BCrypt.gensalt(LOG_ROUNDS);
+        return BCrypt.hashpw(plainPassword, salt);
     }
 }

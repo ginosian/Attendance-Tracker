@@ -21,5 +21,4 @@ public interface ApiAuthAccessTokenService {
 
     List<ApiAuthAccessToken> getApiAccessTokens();
 
-    List<ApiAuthAccessToken> search(final String likeFilter);
 }

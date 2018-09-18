@@ -2,18 +2,17 @@ package com.attendance_tracker.service.authentication.model;
 
 public class AuthenticationRequest {
 
-    private String email;
+    private String username;
     private String plainPassword;
+    private String description;
     private boolean rememberMe;
 
-    private String userAgent;
-
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPlainPassword() {
@@ -24,19 +23,19 @@ public class AuthenticationRequest {
         this.plainPassword = plainPassword;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public boolean isRememberMe() {
         return rememberMe;
     }
 
     public void setRememberMe(boolean rememberMe) {
         this.rememberMe = rememberMe;
-    }
-
-    public String getUserAgent() {
-        return userAgent;
-    }
-
-    public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
     }
 }

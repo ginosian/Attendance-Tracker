@@ -2,11 +2,13 @@ package com.attendance_tracker.service.user_detail;
 
 import com.attendance_tracker.entity.APIUserDetail;
 import com.attendance_tracker.entity.User;
-import com.attendance_tracker.service.user_detail.impl.ChangePasswordRequest;
+import com.attendance_tracker.service.user_detail.model.ChangePasswordRequest;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public interface UserDetailService {
+public interface ApiUserDetailService extends UserDetailsService {
 
-    APIUserDetail getUserByEmail(String email);
+    APIUserDetail loadUserByUsername(String username) throws UsernameNotFoundException;
 
     APIUserDetail changePassword(ChangePasswordRequest changePasswordRequest);
 
@@ -19,5 +21,4 @@ public interface UserDetailService {
     boolean isCorrectPassword(String userId, String password);
 
     boolean isUserActive(User user);
-
 }

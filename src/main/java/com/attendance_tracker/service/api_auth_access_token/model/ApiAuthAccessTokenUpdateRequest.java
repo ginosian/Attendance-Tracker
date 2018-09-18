@@ -4,9 +4,21 @@ public class ApiAuthAccessTokenUpdateRequest {
 
     private Long apiAuthAccessTokenId;
 
-    private Long roleId;
-
-    private Boolean isActive;
-
     private String description;
+
+    public Long getApiAuthAccessTokenId() {
+        return apiAuthAccessTokenId;
+    }
+
+    public void setApiAuthAccessTokenId(Long apiAuthAccessTokenId) {
+        this.apiAuthAccessTokenId = apiAuthAccessTokenId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

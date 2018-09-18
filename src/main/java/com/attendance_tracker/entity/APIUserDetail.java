@@ -34,6 +34,9 @@ public class APIUserDetail extends AbstractEntity implements UserDetails {
     @Column(name = "enabled")
     private Boolean enabled;
 
+    @Column(name = "approved")
+    private Boolean approved;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
@@ -92,6 +95,13 @@ public class APIUserDetail extends AbstractEntity implements UserDetails {
     }
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Boolean isApproved() {
+        return approved;
+    }
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
     }
 
     public Set<Role> getRoles() {
@@ -166,6 +176,7 @@ public class APIUserDetail extends AbstractEntity implements UserDetails {
                 .append(accountNonLocked, that.accountNonLocked)
                 .append(credentialsNonExpired, that.credentialsNonExpired)
                 .append(enabled, that.enabled)
+                .append(approved, that.approved)
                 .append(roles, that.roles )
                 .append(user, that.user)
                 .append(creator, that.creator)
@@ -182,6 +193,7 @@ public class APIUserDetail extends AbstractEntity implements UserDetails {
                 .append(accountNonLocked)
                 .append(credentialsNonExpired)
                 .append(enabled)
+                .append(approved)
                 .append(roles)
                 .append(user)
                 .append(creator)
@@ -198,6 +210,7 @@ public class APIUserDetail extends AbstractEntity implements UserDetails {
                 .append("accountNonLocked", accountNonLocked)
                 .append("credentialsNonExpired", credentialsNonExpired)
                 .append("enabled", enabled)
+                .append("approved", approved)
                 .append("roles ", roles)
                 .append("user_detail", user)
                 .append("creator", creator)
