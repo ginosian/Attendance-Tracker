@@ -6,9 +6,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 
-@Entity(name = "AuthAccessToken")
-@Table(name = "auth_access_token")
-public class AuthAccessToken extends AbstractEntity {
+@Entity(name = "ApiAuthAccessToken")
+@Table(name = "api_auth_access_token")
+public class ApiAuthAccessToken extends AbstractEntity {
 
     // region PROPERTIES
     @Column(name = "token", nullable = false, unique = true)
@@ -57,7 +57,7 @@ public class AuthAccessToken extends AbstractEntity {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final AuthAccessToken that = (AuthAccessToken) o;
+        final ApiAuthAccessToken that = (ApiAuthAccessToken) o;
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
                 .append(token, that.token)
@@ -81,7 +81,7 @@ public class AuthAccessToken extends AbstractEntity {
         return new ToStringBuilder(this)
                 .appendSuper(super.toString())
                 .append("token", token)
-                .append("user", user)
+                .append("user_detail", user)
                 .append("description", description)
                 .toString();
     }

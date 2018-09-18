@@ -96,8 +96,8 @@ public class ApplicationEventListener {
         logger.debug("Done Business Division with policy.");
 
         logger.info("Saving User Details ...");
-        final APIUserDetails employeeDetails = abstractRepository.save(MockData.userDetails(Sets.newHashSet(roles), employee, owner));
-        final APIUserDetails ownerDetails = abstractRepository.save(MockData.userDetails(Sets.newHashSet(roles), owner, owner));
+        final APIUserDetail employeeDetails = abstractRepository.save(MockData.userDetails(Sets.newHashSet(roles), employee, owner));
+        final APIUserDetail ownerDetails = abstractRepository.save(MockData.userDetails(Sets.newHashSet(roles), owner, owner));
         logger.debug("Done User Details.");
 
         logger.info("Saving Authority ...");
@@ -108,8 +108,8 @@ public class ApplicationEventListener {
         logger.debug("Done Authority.");
 
         logger.info("Saving Auth Access Token ...");
-        final AuthAccessToken authAccessTokenEmployee = abstractRepository.save(MockData.authAccessToken(authorityEmployee));
-        final AuthAccessToken authAccessTokenOwner = abstractRepository.save(MockData.authAccessToken(authorityOwner));
+        final ApiAuthAccessToken apiAuthAccessTokenEmployee = abstractRepository.save(MockData.authAccessToken(authorityEmployee));
+        final ApiAuthAccessToken apiAuthAccessTokenOwner = abstractRepository.save(MockData.authAccessToken(authorityOwner));
         logger.debug("Done Auth Access Token.");
     }
 }

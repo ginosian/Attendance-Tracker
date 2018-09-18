@@ -17,7 +17,7 @@ public class Authority extends AbstractEntity {
 
     @OneToOne(optional = false)
     @JoinColumn(foreignKey = @ForeignKey(name = "user_user_details_fk"))
-    private APIUserDetails APIUserDetails;
+    private APIUserDetail APIUserDetail;
     // endregion
 
     //region GETTERS / SETTERS
@@ -29,12 +29,12 @@ public class Authority extends AbstractEntity {
         this.user = user;
     }
 
-    public APIUserDetails getAPIUserDetails() {
-        return APIUserDetails;
+    public APIUserDetail getAPIUserDetail() {
+        return APIUserDetail;
     }
 
-    public void setAPIUserDetails(APIUserDetails APIUserDetails) {
-        this.APIUserDetails = APIUserDetails;
+    public void setAPIUserDetail(APIUserDetail APIUserDetail) {
+        this.APIUserDetail = APIUserDetail;
     }
     // endregion
 
@@ -51,7 +51,7 @@ public class Authority extends AbstractEntity {
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
                 .append(user, that.user)
-                .append(APIUserDetails, that.APIUserDetails)
+                .append(APIUserDetail, that.APIUserDetail)
                 .isEquals();
     }
 
@@ -60,7 +60,7 @@ public class Authority extends AbstractEntity {
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
                 .append(user)
-                .append(APIUserDetails)
+                .append(APIUserDetail)
                 .toHashCode();
     }
 
@@ -68,8 +68,8 @@ public class Authority extends AbstractEntity {
     public String toString() {
         return new ToStringBuilder(this)
                 .appendSuper(super.toString())
-                .append("user", user)
-                .append("APIUserDetails", APIUserDetails)
+                .append("user_detail", user)
+                .append("APIUserDetail", APIUserDetail)
                 .toString();
     }
     //endregion

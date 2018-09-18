@@ -54,6 +54,17 @@ public class JwtTokenService {
         return claims;
     }
 
+    //header
+    //"alg": "HS256",
+    //  "typ": "JWT"
+    //payload
+    //signature
+    // iss (issuer), exp (expiration time), sub (subject), aud (audience)
+    // HMACSHA256(
+    //  base64UrlEncode(header) + "." +
+    //  base64UrlEncode(payload),
+    //  secret)
+
     public String createToken(Map<String, Object> claimsMap, String signingKey, int expirationSecs) {
         final Date createdDate = (Date) claimsMap.computeIfAbsent(JWT_CALIM_KEY_CREATED, k -> getCurrentDate());
         final Date expirationDate = new Date(1000L * expirationSecs + createdDate.getTime());

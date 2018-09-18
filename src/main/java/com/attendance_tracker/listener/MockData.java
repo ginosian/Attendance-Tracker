@@ -149,27 +149,27 @@ public class MockData {
         return Sets.newHashSet(periodDetailWork, periodDetailLunch);
     }
 
-    public static Authority authority(final User user, final APIUserDetails APIUserDetails){
+    public static Authority authority(final User user, final APIUserDetail APIUserDetail){
         final Authority authority = new Authority();
         authority.setUser(user);
-        authority.setAPIUserDetails(APIUserDetails);
+        authority.setAPIUserDetail(APIUserDetail);
         return authority;
     }
 
-    public static APIUserDetails userDetails(final Set<Role> roles, final User user, final Owner creator){
-        final APIUserDetails APIUserDetails = new APIUserDetails();
-        APIUserDetails.setUsername(APIUserDetails.hashCode() + "@" + APIUserDetails.hashCode() + ".com");
-        APIUserDetails.setPasswordHash(String.valueOf(APIUserDetails.hashCode()));
-        APIUserDetails.setRoles(roles);
-        APIUserDetails.setUser(user);
-        APIUserDetails.setCreator(creator);
-        return APIUserDetails;
+    public static APIUserDetail userDetails(final Set<Role> roles, final User user, final Owner creator){
+        final APIUserDetail APIUserDetail = new APIUserDetail();
+        APIUserDetail.setUsername(APIUserDetail.hashCode() + "@" + APIUserDetail.hashCode() + ".com");
+        APIUserDetail.setPasswordHash(String.valueOf(APIUserDetail.hashCode()));
+        APIUserDetail.setRoles(roles);
+        APIUserDetail.setUser(user);
+        APIUserDetail.setCreator(creator);
+        return APIUserDetail;
     }
 
-    public static AuthAccessToken authAccessToken(final Authority authority){
-        final AuthAccessToken authAccessToken = new AuthAccessToken();
-        authAccessToken.setToken(String.valueOf(authAccessToken.hashCode()));
-        authAccessToken.setUser(authority);
-        return authAccessToken;
+    public static ApiAuthAccessToken authAccessToken(final Authority authority){
+        final ApiAuthAccessToken apiAuthAccessToken = new ApiAuthAccessToken();
+        apiAuthAccessToken.setToken(String.valueOf(apiAuthAccessToken.hashCode()));
+        apiAuthAccessToken.setUser(authority);
+        return apiAuthAccessToken;
     }
 }

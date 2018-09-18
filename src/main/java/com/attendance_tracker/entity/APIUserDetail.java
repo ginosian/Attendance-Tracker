@@ -11,9 +11,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "UserDetails")
-@Table(name = "user_details")
-public class APIUserDetails extends AbstractEntity implements UserDetails {
+@Entity(name = "APIUserDetail")
+@Table(name = "api_user_detail")
+public class APIUserDetail extends AbstractEntity implements UserDetails {
 
     // region PROPERTIES
     @Column(name = "username", nullable = false)
@@ -157,7 +157,7 @@ public class APIUserDetails extends AbstractEntity implements UserDetails {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final APIUserDetails that = (APIUserDetails) o;
+        final APIUserDetail that = (APIUserDetail) o;
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
                 .append(username, that.username)
@@ -199,7 +199,7 @@ public class APIUserDetails extends AbstractEntity implements UserDetails {
                 .append("credentialsNonExpired", credentialsNonExpired)
                 .append("enabled", enabled)
                 .append("roles ", roles)
-                .append("user", user)
+                .append("user_detail", user)
                 .append("creator", creator)
                 .toString();
     }

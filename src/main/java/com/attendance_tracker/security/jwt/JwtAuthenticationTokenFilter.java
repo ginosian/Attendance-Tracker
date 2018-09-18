@@ -41,7 +41,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 final String username = jwtTokenService.getUsernameValueFromToken(token);
                 hasText(username, "username from token can not be null or empty");
                 final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                notNull(userDetails, "user details was not fount by username.");
+                notNull(userDetails, "user_detail details was not fount by username.");
                 final AuthorityDetails authorityDetails = new AuthorityDetails(userDetails, token);
                 SecurityContextHolder.getContext().setAuthentication(authorityDetails);
             });
