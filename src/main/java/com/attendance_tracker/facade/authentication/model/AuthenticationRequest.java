@@ -1,11 +1,21 @@
 package com.attendance_tracker.facade.authentication.model;
 
-public class AuthenticationRequest {
+public class AuthenticationRequest{
 
     private String username;
     private String plainPassword;
     private String description;
     private boolean rememberMe;
+
+    public AuthenticationRequest() {
+    }
+
+    public AuthenticationRequest(String username, String plainPassword, String description, boolean rememberMe) {
+        this.username = username;
+        this.plainPassword = plainPassword;
+        this.description = description;
+        this.rememberMe = rememberMe;
+    }
 
     public String getUsername() {
         return username;

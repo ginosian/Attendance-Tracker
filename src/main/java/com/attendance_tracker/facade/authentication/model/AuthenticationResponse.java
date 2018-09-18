@@ -1,28 +1,23 @@
 package com.attendance_tracker.facade.authentication.model;
 
-import java.time.LocalDateTime;
+import com.attendance_tracker.entity.APIUserDetail;
 
-public class AuthenticationResponse {
+public class AuthenticationResponse{
 
-    private String userId;
+    private APIUserDetail apiUserDetail;
     private String token;
-    private LocalDateTime tokenExpirationDate;
 
-    public AuthenticationResponse() {
-    }
-
-    public AuthenticationResponse(String userId, String token, LocalDateTime tokenExpirationDate) {
-        this.userId = userId;
+    public AuthenticationResponse(APIUserDetail apiUserDetail, String token) {
+        this.apiUserDetail = apiUserDetail;
         this.token = token;
-        this.tokenExpirationDate = tokenExpirationDate;
     }
 
-    public String getUserId() {
-        return userId;
+    public APIUserDetail getApiUserDetail() {
+        return apiUserDetail;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setApiUserDetail(APIUserDetail apiUserDetail) {
+        this.apiUserDetail = apiUserDetail;
     }
 
     public String getToken() {
@@ -31,13 +26,5 @@ public class AuthenticationResponse {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public LocalDateTime getTokenExpirationDate() {
-        return tokenExpirationDate;
-    }
-
-    public void setTokenExpirationDate(LocalDateTime tokenExpirationDate) {
-        this.tokenExpirationDate = tokenExpirationDate;
     }
 }

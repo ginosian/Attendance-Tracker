@@ -22,7 +22,7 @@ public class UserCredentialValidationStrategy {
     @Autowired
     private NotificationService notificationService;
 
-    public void validateForAuthentication(final APIUserDetail userDetail) throws AuthException {
+    public void validateForAuthentication(final APIUserDetail userDetail){
         final String userId = userDetail.getUser().getId();
         final String username = userDetail.getUsername();
         final String plainPassword = userDetail.getPassword();

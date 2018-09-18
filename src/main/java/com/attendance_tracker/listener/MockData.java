@@ -40,7 +40,7 @@ public class MockData {
 
     public static Employee employee(final BusinessDivision businessDivision, final ContactDetails contactDetails) {
         final Employee employee = new Employee();
-        employee.setFirstName("Test employee");
+        employee.setFirstName("employee");
         employee.setBusinessDivision(businessDivision);
         employee.setContactDetails(contactDetails);
         return employee;
@@ -48,6 +48,7 @@ public class MockData {
 
     public static Owner owner(final ContactDetails contactDetails) {
         final Owner owner = new Owner();
+        owner.setFirstName("owner");
         owner.setContactDetails(contactDetails);
         return owner;
     }
@@ -158,8 +159,7 @@ public class MockData {
 
     public static APIUserDetail userDetails(final Set<Role> roles, final User user, final Owner creator){
         final APIUserDetail APIUserDetail = new APIUserDetail();
-        APIUserDetail.setUsername(APIUserDetail.hashCode() + "@" + APIUserDetail.hashCode() + ".com");
-        APIUserDetail.setPasswordHash(String.valueOf(APIUserDetail.hashCode()));
+        APIUserDetail.setPasswordHash("password");
         APIUserDetail.setRoles(roles);
         APIUserDetail.setUser(user);
         APIUserDetail.setCreator(creator);

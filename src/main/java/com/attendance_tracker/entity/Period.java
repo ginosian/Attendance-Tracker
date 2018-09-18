@@ -133,7 +133,6 @@ public class Period extends AbstractEntity {
                 .append(startBufferType, that.startBufferType)
                 .append(endBuffer, that.endBuffer)
                 .append(endBufferType, that.endBufferType)
-                .append(periodDetail, that.periodDetail)
                 .isEquals();
     }
 
@@ -147,7 +146,6 @@ public class Period extends AbstractEntity {
                 .append(startBufferType)
                 .append(endBuffer)
                 .append(endBufferType)
-                .append(periodDetail)
                 .toHashCode();
     }
 
@@ -161,7 +159,6 @@ public class Period extends AbstractEntity {
                 .append("startBufferType", startBufferType)
                 .append("endBuffer", endBuffer)
                 .append("endBufferType", endBufferType)
-                .append("periodDetail", periodDetail)
                 .toString();
     }
     //endregion

@@ -5,6 +5,7 @@ import com.attendance_tracker.entity.APIUserDetail;
 import com.attendance_tracker.entity.ApiAuthAccessToken;
 import com.attendance_tracker.facade.authentication.AuthenticationFacade;
 import com.attendance_tracker.facade.authentication.exception.AuthException;
+import com.attendance_tracker.facade.authentication.model.APIAuthenticationResponse;
 import com.attendance_tracker.facade.authentication.model.AuthenticationRequest;
 import com.attendance_tracker.facade.authentication.model.AuthenticationResponse;
 import com.attendance_tracker.facade.authentication.model.TokenAuthenticationRequest;
@@ -17,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.util.Assert.notNull;
@@ -39,7 +42,7 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
     private String masterApiUserDetailPasswordHash;
 
     @Override
-    public AuthenticationResponse authenticateByCredentials(final AuthenticationRequest request) throws AuthException {
+    public AuthenticationResponse authenticateByCredentials(final AuthenticationRequest request){
         notNull(request, "authenticationRequest.request cannot be null.");
         final String username = request.getUsername();
         final String plainPassword = request.getPlainPassword();
@@ -60,7 +63,12 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
         final ApiAuthAccessToken apiAuthAccessToken = apiAuthAccessTokenService.createApiAccessToken(apiAuthAccessTokenCreationRequest);
         logger.trace("ApiAuthAccessToken:'{}' is created for user:'{}'.", apiAuthAccessToken.getToken(), userId);
 
-        return new AuthenticationResponse(userId, apiAuthAccessToken.getToken(),apiAuthAccessToken.getExpires());
+        return new AuthenticationResponse(userDetail, apiAuthAccessToken.getToken());
+    }
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        return new APIAuthenticationResponse(authenticateByCredentials((AuthenticationRequest)authentication.getDetails()));
     }
 
     @Override

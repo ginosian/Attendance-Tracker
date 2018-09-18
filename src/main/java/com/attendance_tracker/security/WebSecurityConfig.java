@@ -1,21 +1,21 @@
 package com.attendance_tracker.security;
 
-import com.attendance_tracker.security.jwt.JwtAuthenticationTokenFilter;
+import com.attendance_tracker.facade.authentication.AuthenticationFacade;
+import com.attendance_tracker.mapper.BeanMapper;
+import com.attendance_tracker.security.jwt.JWTAuthorizationFilter;
+import com.attendance_tracker.security.jwt.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.RememberMeServices;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.ws.rs.HttpMethod;
 
 
 @Configuration
@@ -28,47 +28,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private RememberMeServices rememberMeServices;
+    private AuthenticationFacade authenticationFacade;
 
     @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(this.userDetailsService);
-    }
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private AuthenticationExceptionEntryPoint authenticationExceptionEntryPoint;
+    private BeanMapper beanMapper;
 
-    @Bean
-    public JwtAuthenticationTokenFilter getJwtAuthenticationTokenFilter() {
-        return new JwtAuthenticationTokenFilter();
+    public WebSecurityConfig(BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(authenticationExceptionEntryPoint)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorizeRequests = httpSecurity.authorizeRequests();
-        authorizeRequests
-                .antMatchers(HttpMethod.GET, "/home").permitAll()
-                .antMatchers("/sign-up").permitAll()
-                .antMatchers("/sign-in").permitAll()
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable().authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/sign_up").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
-                .and()
-                .rememberMe().rememberMeServices(rememberMeServices);
-        authorizeRequests.anyRequest().authenticated();
-
-        httpSecurity.addFilterBefore(getJwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        httpSecurity.headers()
-                .contentTypeOptions().disable()
-                .frameOptions().disable();
-        httpSecurity.headers().cacheControl();
+                .addFilter(new JwtAuthenticationFilter(authenticationFacade, beanMapper))
+                .addFilter(new JWTAuthorizationFilter(authenticationFacade));
     }
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+    }
+
 }

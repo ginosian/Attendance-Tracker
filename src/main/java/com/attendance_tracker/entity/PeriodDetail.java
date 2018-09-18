@@ -67,7 +67,6 @@ public class PeriodDetail extends AbstractEntity {
                 .appendSuper(super.equals(o))
                 .append(periodType, that.periodType)
                 .append(periods, that.periods)
-                .append(attendancePolicy, that.attendancePolicy)
                 .isEquals();
     }
 
@@ -77,7 +76,6 @@ public class PeriodDetail extends AbstractEntity {
                 .appendSuper(super.hashCode())
                 .append(periodType)
                 .append(periods)
-                .append(attendancePolicy)
                 .toHashCode();
     }
 
@@ -87,7 +85,6 @@ public class PeriodDetail extends AbstractEntity {
                 .appendSuper(super.toString())
                 .append("periodType", periodType)
                 .append("periods", periods)
-                .append("attendancePolicy", attendancePolicy)
                 .toString();
     }
     //endregion

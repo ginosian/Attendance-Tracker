@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@Service
+@Service("api_remeber_me_service")
 public class RememberMeServicesImpl implements RememberMeServices {
 
     @Override
@@ -18,11 +18,11 @@ public class RememberMeServicesImpl implements RememberMeServices {
 
     @Override
     public void loginFail(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-
+        System.out.println();
     }
 
     @Override
     public void loginSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
-
+        System.out.println();
     }
 }
