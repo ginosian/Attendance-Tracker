@@ -1,4 +1,4 @@
-package com.attendance_tracker.service.authentication;
+package com.attendance_tracker.facade.authentication;
 
 
 import org.springframework.security.crypto.bcrypt.BCrypt;

@@ -1,10 +1,10 @@
-package com.attendance_tracker.service.authentication;
+package com.attendance_tracker.facade.authentication;
 
 import com.attendance_tracker.entity.ApiAuthAccessToken;
-import com.attendance_tracker.service.authentication.exception.AuthException;
-import com.attendance_tracker.service.authentication.model.AuthenticationRequest;
-import com.attendance_tracker.service.authentication.model.AuthenticationResponse;
-import com.attendance_tracker.service.authentication.model.TokenAuthenticationRequest;
+import com.attendance_tracker.facade.authentication.exception.AuthException;
+import com.attendance_tracker.facade.authentication.model.AuthenticationRequest;
+import com.attendance_tracker.facade.authentication.model.AuthenticationResponse;
+import com.attendance_tracker.facade.authentication.model.TokenAuthenticationRequest;
 
 public interface AuthenticationService {
 

@@ -1,4 +1,4 @@
-package com.attendance_tracker.service.authentication.exception;
+package com.attendance_tracker.facade.authentication.exception;
 
 public class AuthException extends Exception {
 

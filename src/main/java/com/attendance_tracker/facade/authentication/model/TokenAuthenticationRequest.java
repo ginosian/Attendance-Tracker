@@ -1,4 +1,4 @@
-package com.attendance_tracker.service.authentication.model;
+package com.attendance_tracker.facade.authentication.model;
 
 public class TokenAuthenticationRequest {
 
