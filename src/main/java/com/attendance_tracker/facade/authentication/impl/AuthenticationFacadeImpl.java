@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
@@ -88,9 +87,14 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
     public ApiAuthAccessToken authenticateByApiAccessToken(final String token) throws AuthException {
         final ApiAuthAccessToken existingToken = apiAuthAccessTokenService.findByApiAccessToken(token).orElse(null);
         if(existingToken == null){
-            throw new AuthenticationCredentialsNotFoundException("Api Access Token doesn't exist.");
+            return null;
+        } else {
+            final ApiAuthAccessTokenRefreshRequest apiAuthAccessTokenRefreshRequest = new ApiAuthAccessTokenRefreshRequest(existingToken);
+            logger.debug("Refreshing apiAuthAccessToken for user:'{}'...", existingToken.getApiUserDetail().getUser().getId());
+            final ApiAuthAccessToken apiAuthAccessToken = apiAuthAccessTokenService.updateApiAccessToken(apiAuthAccessTokenRefreshRequest);
+            logger.trace("ApiAuthAccessToken:'{}' is refreshed for user:'{}'.", apiAuthAccessToken.getToken(), existingToken.getApiUserDetail().getUser().getId());
+            return apiAuthAccessToken;
         }
-        return existingToken;
     }
 
     private ApiAuthAccessTokenCreationRequest create(final APIUserDetail userDetail, final boolean isRememberMe){
