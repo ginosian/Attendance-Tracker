@@ -64,7 +64,7 @@ public class ApiAuthAccessTokenServiceImpl implements ApiAuthAccessTokenService 
         apiAuthAccessToken.setTokenType(tokenType);
         apiAuthAccessToken.setActive(true);
         apiAuthAccessToken.setApiUserDetail(userDetail);
-        apiAuthAccessToken.setExpires(null);
+        apiAuthAccessToken.setExpires(expires.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
         return tokenRepository.save(apiAuthAccessToken);
     }
 
