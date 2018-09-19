@@ -1,9 +1,6 @@
 package com.attendance_tracker.rest.endpoint.impl;
 
 import com.attendance_tracker.facade.authentication.AuthenticationFacade;
-import com.attendance_tracker.facade.authentication.exception.AuthException;
-import com.attendance_tracker.facade.authentication.model.AuthenticationRequest;
-import com.attendance_tracker.facade.authentication.model.AuthenticationResponse;
 import com.attendance_tracker.mapper.BeanMapper;
 import com.attendance_tracker.rest.endpoint.AuthEndpoint;
 import com.attendance_tracker.rest.endpoint.dto.AuthRequestDto;
@@ -20,14 +17,6 @@ public class AuthEndpointImpl implements AuthEndpoint {
 
     @Override
     public AuthResponseDto login(final AuthRequestDto requestDto) {
-        final AuthenticationRequest authenticationRequest = mapper.map(requestDto, AuthenticationRequest.class);
-        final AuthenticationResponse authenticationResponse;
-        try {
-            authenticationResponse = authenticationFacade.authenticateByCredentials(authenticationRequest);
-            return mapper.map(authenticationResponse, AuthResponseDto.class);
-        } catch (AuthException e) {
-            e.printStackTrace();
-        }
         return null;
     }
 }

@@ -1,58 +1,21 @@
 package com.attendance_tracker.entity;
 
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity(name = "User")
 @Table(name = "user_detail")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
 public class User extends AbstractEntity {
-
     // region PROPERTIES
     @Embedded
     private ContactDetails contactDetails;
-
     // endregion
-
-    // region GETTERS / SETTERS
-    public ContactDetails getContactDetails() {
-        return contactDetails;
-    }
-    public void setContactDetails(ContactDetails contactDetails) {
-        this.contactDetails = contactDetails;
-    }
-    // endregion
-
-    //region EQUALS / HASHCODE / TOSTRING
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) {
-//            return true;
-//        }
-//        if (o == null || getClass() != o.getClass()) {
-//            return false;
-//        }
-//        final User that = (User) o;
-//        return new EqualsBuilder()
-//                .appendSuper(super.equals(o))
-//                .append(contactDetails, that.contactDetails)
-//                .isEquals();
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return new HashCodeBuilder(17, 37)
-//                .appendSuper(super.hashCode())
-//                .append(contactDetails)
-//                .toHashCode();
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return new ToStringBuilder(this)
-//                .appendSuper(super.toString())
-//                .append("contactDetails", contactDetails)
-//                .toString();
-//    }
-    //endregion
 }

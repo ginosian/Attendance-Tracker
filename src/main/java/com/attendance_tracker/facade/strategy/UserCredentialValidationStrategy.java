@@ -33,7 +33,7 @@ public class UserCredentialValidationStrategy {
         hasText(username, "userDetail.username can not be null or empty.");
         hasText(plainPassword, "userDetail.plainPassword can not be null or empty.");
 
-        if(!userDetail.isApproved()){
+        if(!userDetail.getApproved()){
             notificationService.requestEmailVerification();
             logger.debug("Authentication failed for for user:'{}' as email:'{}' is not verified.", userId, username);
             throw new AuthorizationException();

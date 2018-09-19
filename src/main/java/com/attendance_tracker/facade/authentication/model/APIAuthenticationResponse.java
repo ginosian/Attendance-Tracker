@@ -1,18 +1,20 @@
 package com.attendance_tracker.facade.authentication.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class APIAuthenticationResponse implements Authentication {
 
-    private final AuthenticationResponse authenticationResponse;
-
-    public APIAuthenticationResponse(AuthenticationResponse authenticationResponse) {
-        this.authenticationResponse = authenticationResponse;
-    }
+    private AuthenticationResponse authenticationResponse;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

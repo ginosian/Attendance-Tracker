@@ -1,5 +1,8 @@
 package com.attendance_tracker.entity;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,8 +13,10 @@ import java.util.Set;
 
 @Entity(name = "APIUserDetail")
 @Table(name = "api_user_detail")
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true, exclude = {"roles"})
 public class APIUserDetail extends AbstractEntity implements UserDetails {
-
     // region PROPERTIES
     @Column(name = "username", nullable = false)
     private String username;
@@ -51,78 +56,6 @@ public class APIUserDetail extends AbstractEntity implements UserDetails {
     private Owner creator;
     // endregion
 
-    //region GETTERS / SETTERS
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public Boolean getAccountNonExpired() {
-        return accountNonExpired;
-    }
-    public void setAccountNonExpired(Boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    public Boolean getAccountNonLocked() {
-        return accountNonLocked;
-    }
-    public void setAccountNonLocked(Boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    public Boolean getCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Boolean isApproved() {
-        return approved;
-    }
-    public void setApproved(Boolean approved) {
-        this.approved = approved;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Owner getCreator() {
-        return creator;
-    }
-    public void setCreator(Owner creator) {
-        this.creator = creator;
-    }
-    //endregion
-
     // region IMPLEMENTATIONS
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -154,64 +87,4 @@ public class APIUserDetail extends AbstractEntity implements UserDetails {
         return this.enabled == null ? false : this.enabled;
     }
     // endregion
-
-    //region EQUALS / HASHCODE / TOSTRING
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) {
-//            return true;
-//        }
-//        if (o == null || getClass() != o.getClass()) {
-//            return false;
-//        }
-//        final APIUserDetail that = (APIUserDetail) o;
-//        return new EqualsBuilder()
-//                .appendSuper(super.equals(o))
-//                .append(username, that.username)
-//                .append(passwordHash, that.passwordHash)
-//                .append(accountNonExpired, that.accountNonExpired)
-//                .append(accountNonLocked, that.accountNonLocked)
-//                .append(credentialsNonExpired, that.credentialsNonExpired)
-//                .append(enabled, that.enabled)
-//                .append(approved, that.approved)
-//                .append(roles, that.roles )
-//                .append(user, that.user)
-//                .append(creator, that.creator)
-//                .isEquals();
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return new HashCodeBuilder(17, 37)
-//                .appendSuper(super.hashCode())
-//                .append(username)
-//                .append(passwordHash)
-//                .append(accountNonExpired)
-//                .append(accountNonLocked)
-//                .append(credentialsNonExpired)
-//                .append(enabled)
-//                .append(approved)
-//                .append(roles)
-//                .append(user)
-//                .append(creator)
-//                .toHashCode();
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return new ToStringBuilder(this)
-//                .appendSuper(super.toString())
-//                .append("username", username)
-//                .append("passwordHash", passwordHash)
-//                .append("accountNonExpired", accountNonExpired)
-//                .append("accountNonLocked", accountNonLocked)
-//                .append("credentialsNonExpired", credentialsNonExpired)
-//                .append("enabled", enabled)
-//                .append("approved", approved)
-//                .append("roles ", roles)
-//                .append("user_detail", user)
-//                .append("creator", creator)
-//                .toString();
-//    }
-    //endregion
 }

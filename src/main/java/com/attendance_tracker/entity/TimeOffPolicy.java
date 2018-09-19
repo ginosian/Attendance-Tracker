@@ -1,60 +1,22 @@
 package com.attendance_tracker.entity;
 
 import com.attendance_tracker.misc.TimeOffMinDuration;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 
 @Entity(name = "TimeOffPolicy")
 @Table(name = "time_off_policy")
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
 public class TimeOffPolicy extends AbstractEntity {
-
     // region PROPERTIES
     @Column(name = "time_off_min_duration")
     @Enumerated(EnumType.STRING)
     private TimeOffMinDuration timeOffMinDuration;
     // endregion
-
-    // region GETTERS / SETTERS
-    public TimeOffMinDuration getTimeOffMinDuration() {
-        return timeOffMinDuration;
-    }
-
-    public void setTimeOffMinDuration(TimeOffMinDuration timeOffMinDuration) {
-        this.timeOffMinDuration = timeOffMinDuration;
-    }
-    // endregion
-
-    //region EQUALS / HASHCODE / TOSTRING
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) {
-//            return true;
-//        }
-//        if (o == null || getClass() != o.getClass()) {
-//            return false;
-//        }
-//        final TimeOffPolicy that = (TimeOffPolicy) o;
-//        return new EqualsBuilder()
-//                .appendSuper(super.equals(o))
-//                .append(timeOffMinDuration, that.timeOffMinDuration)
-//                .isEquals();
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return new HashCodeBuilder(17, 37)
-//                .appendSuper(super.hashCode())
-//                .append(timeOffMinDuration)
-//                .toHashCode();
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return new ToStringBuilder(this)
-//                .appendSuper(super.toString())
-//                .append("timeOffMinDuration",timeOffMinDuration)
-//                .toString();
-//    }
-    //endregion
 }

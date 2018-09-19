@@ -44,7 +44,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(final String header) {
         final String token = header.replaceAll("Bearer ", "");
         final ApiAuthAccessToken existingToken = authenticationFacade.authenticateByApiAccessToken(token);
-        if(existingToken == null || !existingToken.isActive()){
+        if(existingToken == null || !existingToken.getActive()){
             return null;
         }
         return new UsernamePasswordAuthenticationToken(existingToken.getApiUserDetail(), existingToken.getToken(), existingToken.getApiUserDetail().getAuthorities());
