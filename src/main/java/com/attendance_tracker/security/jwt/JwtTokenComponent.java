@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -19,15 +19,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static org.springframework.util.Assert.hasText;
-import static org.springframework.util.Assert.notEmpty;
-import static org.springframework.util.Assert.notNull;
+import static org.springframework.util.Assert.*;
 
-@Service
+@Component
 @PropertySource("classpath:application-security.properties")
-public class JwtTokenService {
+public class JwtTokenComponent {
 
-    private final static Logger logger = LoggerFactory.getLogger(JwtTokenService.class);
+    private final static Logger logger = LoggerFactory.getLogger(JwtTokenComponent.class);
 
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 

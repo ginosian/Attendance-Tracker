@@ -50,7 +50,7 @@ public class ApiAuthAccessToken extends AbstractEntity {
         this.expires = expires;
     }
 
-    public Boolean getActive() {
+    public Boolean isActive() {
         return active;
     }
     public void setActive(Boolean active) {

@@ -1,7 +1,6 @@
 package com.attendance_tracker.security.jwt;
 
 import com.attendance_tracker.facade.authentication.AuthenticationFacade;
-import com.attendance_tracker.facade.authentication.exception.AuthException;
 import com.attendance_tracker.facade.authentication.model.AuthenticationRequest;
 import com.attendance_tracker.facade.authentication.model.AuthenticationResponse;
 import com.attendance_tracker.mapper.BeanMapper;
@@ -42,10 +41,7 @@ public class JwtAuthenticationFilter  extends UsernamePasswordAuthenticationFilt
             return new UsernamePasswordAuthenticationToken(authenticationResponse.getApiUserDetail(), authenticationResponse.getToken(), authenticationResponse.getApiUserDetail().getAuthorities());
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (AuthException e) {
-            e.printStackTrace();
         }
-        return null;
     }
     @Override
     protected void successfulAuthentication(HttpServletRequest req,

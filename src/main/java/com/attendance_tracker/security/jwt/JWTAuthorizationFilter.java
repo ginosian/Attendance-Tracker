@@ -31,6 +31,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
         final UsernamePasswordAuthenticationToken authentication = getAuthentication(header);
+        if (authentication == null){
+            SecurityContextHolder.getContext().setAuthentication(null);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            chain.doFilter(req, res);
+            return;
+        }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }
@@ -38,6 +44,9 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(final String header) {
         final String token = header.replaceAll("Bearer ", "");
         final ApiAuthAccessToken existingToken = authenticationFacade.authenticateByApiAccessToken(token);
+        if(existingToken == null || !existingToken.isActive()){
+            return null;
+        }
         return new UsernamePasswordAuthenticationToken(existingToken.getApiUserDetail(), existingToken.getToken(), existingToken.getApiUserDetail().getAuthorities());
     }
 }

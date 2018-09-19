@@ -2,7 +2,7 @@ package com.attendance_tracker.service.token.impl;
 
 import com.attendance_tracker.entity.APIUserDetail;
 import com.attendance_tracker.misc.TokenType;
-import com.attendance_tracker.security.jwt.JwtTokenService;
+import com.attendance_tracker.security.jwt.JwtTokenComponent;
 import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenCreationRequest;
 import com.attendance_tracker.service.token.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class TokenServiceImpl implements TokenService {
     private String CALIM_ACTIVE;
 
     @Autowired
-    private JwtTokenService jwtTokenService;
+    private JwtTokenComponent jwtTokenComponent;
 
     @Override
     public String create(final ApiAuthAccessTokenCreationRequest request) {
@@ -65,7 +65,7 @@ public class TokenServiceImpl implements TokenService {
 
         final Date expirationDate = request.getExpires();
 
-        return jwtTokenService.createToken(claims, expirationDate);
+        return jwtTokenComponent.createToken(claims, expirationDate);
     }
 
     @Override
@@ -73,22 +73,22 @@ public class TokenServiceImpl implements TokenService {
         hasText(token, "request.token can not be null or empty.");
         notNull(expires, "request.expires can not be null.");
 
-        final Map<String, Object> claims = jwtTokenService.getClaims(token);
+        final Map<String, Object> claims = jwtTokenComponent.getClaims(token);
         claims.remove(CALIM_CREATED);
         final Date creationDate =  new Date();
         claims.put(CALIM_CREATED, creationDate);
-        return jwtTokenService.createToken(claims, expires);
+        return jwtTokenComponent.createToken(claims, expires);
     }
 
     @Override
     public String getUsername(final String token) {
         hasText(token, "token can not be null or empty.");
-        return jwtTokenService.getClaim(token, CALIM_USERNAME);
+        return jwtTokenComponent.getClaim(token, CALIM_USERNAME);
     }
 
     @Override
     public String getPasswordHash(final String token) {
         hasText(token, "token can not be null or empty.");
-        return jwtTokenService.getClaim(token, CALIM_PASSWORD);
+        return jwtTokenComponent.getClaim(token, CALIM_PASSWORD);
     }
 }
