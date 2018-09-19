@@ -2,6 +2,7 @@ package com.attendance_tracker.rest.endpoint;
 
 
 import com.attendance_tracker.rest.endpoint.dto.InfoDto;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -16,6 +17,6 @@ public interface OwnerEndpoint {
 
     @GET
     @Path("")
-//    @PreAuthorize("hasRole('OWNER')")
+    @PreAuthorize("hasRole('OWNER')")
     InfoDto owner();
 }

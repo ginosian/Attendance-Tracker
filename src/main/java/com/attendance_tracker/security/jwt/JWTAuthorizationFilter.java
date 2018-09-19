@@ -1,7 +1,7 @@
 package com.attendance_tracker.security.jwt;
 
+import com.attendance_tracker.entity.ApiAuthAccessToken;
 import com.attendance_tracker.facade.authentication.AuthenticationFacade;
-import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -11,42 +11,33 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class JWTAuthorizationFilter  extends BasicAuthenticationFilter {
+public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
+    private AuthenticationFacade authenticationFacade;
 
     public JWTAuthorizationFilter(AuthenticationFacade authenticationManager) {
         super(authenticationManager);
+        this.authenticationFacade = authenticationManager;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain) throws IOException, ServletException {
-        String header = req.getHeader("Authorization");
+        final String header = req.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
             chain.doFilter(req, res);
             return;
         }
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+        final UsernamePasswordAuthenticationToken authentication = getAuthentication(header);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (token != null) {
-            // parse the token.
-            String user = Jwts.parser()
-                    .setSigningKey("some secret")
-                    .parseClaimsJws(token.replace("Bearer ", ""))
-                    .getBody()
-                    .getSubject();
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-            }
-            return null;
-        }
-        return null;
+
+    private UsernamePasswordAuthenticationToken getAuthentication(final String header) {
+        final String token = header.replaceAll("Bearer ", "");
+        final ApiAuthAccessToken existingToken = authenticationFacade.authenticateByApiAccessToken(token);
+        return new UsernamePasswordAuthenticationToken(existingToken.getApiUserDetail(), existingToken.getToken(), existingToken.getApiUserDetail().getAuthorities());
     }
 }

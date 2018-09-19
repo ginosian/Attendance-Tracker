@@ -8,19 +8,22 @@ import com.attendance_tracker.facade.authentication.exception.AuthException;
 import com.attendance_tracker.facade.authentication.model.APIAuthenticationResponse;
 import com.attendance_tracker.facade.authentication.model.AuthenticationRequest;
 import com.attendance_tracker.facade.authentication.model.AuthenticationResponse;
-import com.attendance_tracker.facade.authentication.model.TokenAuthenticationRequest;
 import com.attendance_tracker.facade.strategy.UserCredentialValidationStrategy;
 import com.attendance_tracker.misc.TokenType;
 import com.attendance_tracker.service.api_auth_access_token.ApiAuthAccessTokenService;
 import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenCreationRequest;
+import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenRefreshRequest;
 import com.attendance_tracker.service.user_detail.ApiUserDetailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -53,17 +56,27 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
         final APIUserDetail userDetail = apiUserDetailService.loadUserByUsername(username);
         logger.trace("Found authority:'{}' by username.", userDetail.getId());
 
-        userCredentialValidationStrategy.validateForAuthentication(userDetail);
-
         final String userId = userDetail.getUser().getId();
 
-        final ApiAuthAccessTokenCreationRequest apiAuthAccessTokenCreationRequest = create(userDetail, request.isRememberMe(), request.getDescription());
+        userCredentialValidationStrategy.validateForAuthentication(userDetail);
 
-        logger.debug("Creating apiAuthAccessToken for user:'{}'...", userId);
-        final ApiAuthAccessToken apiAuthAccessToken = apiAuthAccessTokenService.createApiAccessToken(apiAuthAccessTokenCreationRequest);
-        logger.trace("ApiAuthAccessToken:'{}' is created for user:'{}'.", apiAuthAccessToken.getToken(), userId);
+        final ApiAuthAccessToken existingToken = apiAuthAccessTokenService.findByUserDetail(userDetail.getId()).orElse(null);
 
-        return new AuthenticationResponse(userDetail, apiAuthAccessToken.getToken());
+
+        if(existingToken == null){
+            final ApiAuthAccessTokenCreationRequest apiAuthAccessTokenCreationRequest = create(userDetail, request.isRememberMe());
+
+            logger.debug("Creating apiAuthAccessToken for user:'{}'...", userId);
+            final ApiAuthAccessToken apiAuthAccessToken = apiAuthAccessTokenService.createApiAccessToken(apiAuthAccessTokenCreationRequest);
+            logger.trace("ApiAuthAccessToken:'{}' is created for user:'{}'.", apiAuthAccessToken.getToken(), userId);
+            return new AuthenticationResponse(userDetail, apiAuthAccessToken.getToken());
+        } else {
+            final ApiAuthAccessTokenRefreshRequest apiAuthAccessTokenRefreshRequest = new ApiAuthAccessTokenRefreshRequest(existingToken);
+            logger.debug("Refreshing apiAuthAccessToken for user:'{}'...", userId);
+            final ApiAuthAccessToken apiAuthAccessToken = apiAuthAccessTokenService.updateApiAccessToken(apiAuthAccessTokenRefreshRequest);
+            logger.trace("ApiAuthAccessToken:'{}' is refreshed for user:'{}'.", apiAuthAccessToken.getToken(), userId);
+            return new AuthenticationResponse(userDetail, apiAuthAccessToken.getToken());
+        }
     }
 
     @Override
@@ -72,21 +85,20 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
     }
 
     @Override
-    public AuthenticationResponse authenticateByRememberMeToken(final TokenAuthenticationRequest request) throws AuthException {
-        return null;
-    }
-
-    @Override
     public ApiAuthAccessToken authenticateByApiAccessToken(final String token) throws AuthException {
-        return null;
+        final ApiAuthAccessToken existingToken = apiAuthAccessTokenService.findByApiAccessToken(token).orElse(null);
+        if(existingToken == null){
+            throw new AuthenticationCredentialsNotFoundException("Api Access Token doesn't exist.");
+        }
+        return existingToken;
     }
 
-    private ApiAuthAccessTokenCreationRequest create(final APIUserDetail userDetail, final boolean isRememberMe, final String description){
+    private ApiAuthAccessTokenCreationRequest create(final APIUserDetail userDetail, final boolean isRememberMe){
         final ApiAuthAccessTokenCreationRequest apiAuthAccessTokenCreationRequest = new ApiAuthAccessTokenCreationRequest();
         apiAuthAccessTokenCreationRequest.setUserDetail(userDetail);
-        apiAuthAccessTokenCreationRequest.setDescription(description);
         apiAuthAccessTokenCreationRequest.setTokenType(isRememberMe ? TokenType.LOGIN_REMEMBER_ME : TokenType.LOGIN);
         apiAuthAccessTokenCreationRequest.setActive(true);
+        apiAuthAccessTokenCreationRequest.setExpires(new Date());
         return apiAuthAccessTokenCreationRequest;
     }
 }

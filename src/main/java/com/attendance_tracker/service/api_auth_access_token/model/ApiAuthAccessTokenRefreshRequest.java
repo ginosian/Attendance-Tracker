@@ -1,26 +1,23 @@
 package com.attendance_tracker.service.api_auth_access_token.model;
 
-import java.util.Date;
+import com.attendance_tracker.entity.ApiAuthAccessToken;
 
 public class ApiAuthAccessTokenRefreshRequest {
 
-    private String token;
+    private ApiAuthAccessToken token;
 
-    private Date created;
-
-    public String getToken() {
-        return token;
+    public ApiAuthAccessTokenRefreshRequest() {
     }
 
-    public void setToken(String token) {
+    public ApiAuthAccessTokenRefreshRequest(ApiAuthAccessToken token) {
         this.token = token;
     }
 
-    public Date getCreated() {
-        return created;
+    public ApiAuthAccessToken getToken() {
+        return token;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
+    public void setToken(ApiAuthAccessToken token) {
+        this.token = token;
     }
 }

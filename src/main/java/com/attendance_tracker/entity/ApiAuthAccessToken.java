@@ -24,11 +24,8 @@ public class ApiAuthAccessToken extends AbstractEntity {
     private Boolean active;
 
     @OneToOne(optional = false)
-    @JoinColumn(foreignKey = @ForeignKey(name = "token_api_user_detail_fk"))
-    private APIUserDetail APIUserDetail;
-
-    @Column(name = "description")
-    private String description;
+    @JoinColumn(foreignKey = @ForeignKey(name = "api_auth_access_token_api_user_detail_fk"))
+    private APIUserDetail apiUserDetail;
     // endregion
 
     //region GETTERS / SETTERS
@@ -60,19 +57,12 @@ public class ApiAuthAccessToken extends AbstractEntity {
         this.active = active;
     }
 
-    public com.attendance_tracker.entity.APIUserDetail getAPIUserDetail() {
-        return APIUserDetail;
+    public com.attendance_tracker.entity.APIUserDetail getApiUserDetail() {
+        return apiUserDetail;
     }
 
-    public void setAPIUserDetail(com.attendance_tracker.entity.APIUserDetail APIUserDetail) {
-        this.APIUserDetail = APIUserDetail;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
+    public void setApiUserDetail(com.attendance_tracker.entity.APIUserDetail apiUserDetail) {
+        this.apiUserDetail = apiUserDetail;
     }
     // endregion
 

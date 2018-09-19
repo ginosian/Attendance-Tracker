@@ -1,15 +1,16 @@
 package com.attendance_tracker.service.token;
 
 import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenCreationRequest;
-import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenRefreshRequest;
+
+import java.util.Date;
 
 public interface TokenService {
 
-    String createNewToken(ApiAuthAccessTokenCreationRequest request);
+    String create(ApiAuthAccessTokenCreationRequest request);
 
-    String refreshToken(ApiAuthAccessTokenRefreshRequest request);
+    String refresh(final String token, final Date expires);
 
-    String getUsernameFromToken(String token);
+    String getUsername(String token);
 
-    String getPasswordHashFromToken(String token);
+    String getPasswordHash(String token);
 }

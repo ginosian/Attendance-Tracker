@@ -4,7 +4,6 @@ import com.attendance_tracker.entity.APIUserDetail;
 import com.attendance_tracker.misc.TokenType;
 import com.attendance_tracker.security.jwt.JwtTokenService;
 import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenCreationRequest;
-import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenRefreshRequest;
 import com.attendance_tracker.service.token.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,10 +20,6 @@ import static org.springframework.util.Assert.notNull;
 @Service
 @PropertySource("classpath:application-security.properties")
 public class TokenServiceImpl implements TokenService {
-
-
-    @Value("${security.jwt.expiration.seconds:3600}")
-    private int AUTH_ACCESS_TOKEN_EXPIRATION_SECONDS;
 
     @Value("${security.jwt.calim.username:username}")
     private String CALIM_USERNAME;
@@ -45,16 +40,18 @@ public class TokenServiceImpl implements TokenService {
     private JwtTokenService jwtTokenService;
 
     @Override
-    public String createNewToken(final ApiAuthAccessTokenCreationRequest request) {
+    public String create(final ApiAuthAccessTokenCreationRequest request) {
         notNull(request, "request can not be null.");
         final APIUserDetail userDetail = request.getUserDetail();
         final TokenType tokenType = request.getTokenType();
         final String username = userDetail.getUsername();
         final String passwordHash = userDetail.getPasswordHash();
+        final Date expires = request.getExpires();
         notNull(userDetail, "request.userDetail can not be null.");
         notNull(tokenType, "request.tokenType can not be null.");
         hasText(username, "request.userDetail.username can not be null or empty.");
         hasText(username, "request.userDetail.passwordHash can not be null or empty.");
+        notNull(expires, "request.expires can not be null.");
 
         final Date creationDate =  new Date();
         final boolean isActive = request.isActive();
@@ -66,35 +63,32 @@ public class TokenServiceImpl implements TokenService {
         claims.put(CALIM_TYPE, tokenType);
         claims.put(CALIM_ACTIVE, isActive);
 
-        final Date expirationDate = createExpirationDate(creationDate.getTime());
+        final Date expirationDate = request.getExpires();
 
         return jwtTokenService.createToken(claims, expirationDate);
     }
 
     @Override
-    public String refreshToken(final ApiAuthAccessTokenRefreshRequest request) {
-        notNull(request, "request can not be null.");
-        final Map<String, Object> claims = jwtTokenService.getClaims(request.getToken());
+    public String refresh(final String token, final Date expires) {
+        hasText(token, "request.token can not be null or empty.");
+        notNull(expires, "request.expires can not be null.");
+
+        final Map<String, Object> claims = jwtTokenService.getClaims(token);
         claims.remove(CALIM_CREATED);
         final Date creationDate =  new Date();
         claims.put(CALIM_CREATED, creationDate);
-        final Date expirationDate = createExpirationDate(creationDate.getTime());
-        return jwtTokenService.createToken(claims, expirationDate);
+        return jwtTokenService.createToken(claims, expires);
     }
 
     @Override
-    public String getUsernameFromToken(final String token) {
+    public String getUsername(final String token) {
         hasText(token, "token can not be null or empty.");
         return jwtTokenService.getClaim(token, CALIM_USERNAME);
     }
 
     @Override
-    public String getPasswordHashFromToken(final String token) {
+    public String getPasswordHash(final String token) {
         hasText(token, "token can not be null or empty.");
         return jwtTokenService.getClaim(token, CALIM_PASSWORD);
-    }
-
-    private Date createExpirationDate(final long time){
-        return new Date(1000L * AUTH_ACCESS_TOKEN_EXPIRATION_SECONDS + time);
     }
 }

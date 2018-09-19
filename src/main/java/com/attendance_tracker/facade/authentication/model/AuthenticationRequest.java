@@ -4,16 +4,14 @@ public class AuthenticationRequest{
 
     private String username;
     private String plainPassword;
-    private String description;
     private boolean rememberMe;
 
     public AuthenticationRequest() {
     }
 
-    public AuthenticationRequest(String username, String plainPassword, String description, boolean rememberMe) {
+    public AuthenticationRequest(String username, String plainPassword, boolean rememberMe) {
         this.username = username;
         this.plainPassword = plainPassword;
-        this.description = description;
         this.rememberMe = rememberMe;
     }
 
@@ -31,14 +29,6 @@ public class AuthenticationRequest{
 
     public void setPlainPassword(String plainPassword) {
         this.plainPassword = plainPassword;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public boolean isRememberMe() {

@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter  extends UsernamePasswordAuthenticationFilt
             final AuthRequestDto credentials = new ObjectMapper().readValue(req.getInputStream(), AuthRequestDto.class);
             final AuthenticationRequest authenticationRequest = beanMapper.map(credentials, AuthenticationRequest.class);
             final AuthenticationResponse authenticationResponse = authenticationFacade.authenticateByCredentials(authenticationRequest);
-            return new UsernamePasswordAuthenticationToken(authenticationResponse.getApiUserDetail(), authenticationResponse.getToken());
+            return new UsernamePasswordAuthenticationToken(authenticationResponse.getApiUserDetail(), authenticationResponse.getToken(), authenticationResponse.getApiUserDetail().getAuthorities());
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (AuthException e) {
