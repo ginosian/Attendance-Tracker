@@ -52,7 +52,7 @@ public class ApiAuthAccessTokenServiceImpl implements ApiAuthAccessTokenService 
         notNull(request, "request can not be null");
         final APIUserDetail userDetail = request.getUserDetail();
         final TokenType tokenType = request.getTokenType();
-        notNull(userDetail, "request.userDetailcan not be null");
+        notNull(userDetail, "request.userDetail can not be null");
         notNull(tokenType, "request.tokenType can not be null");
 
         final Date expires = createExpirationDate(new Date().getTime());
