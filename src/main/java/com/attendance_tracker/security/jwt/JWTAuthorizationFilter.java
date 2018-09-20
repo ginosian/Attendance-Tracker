@@ -27,14 +27,13 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                                     FilterChain chain) throws IOException, ServletException {
         final String header = req.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
-            chain.doFilter(req, res);
+            res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         final UsernamePasswordAuthenticationToken authentication = getAuthentication(header);
         if (authentication == null){
             SecurityContextHolder.getContext().setAuthentication(null);
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            chain.doFilter(req, res);
             return;
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);

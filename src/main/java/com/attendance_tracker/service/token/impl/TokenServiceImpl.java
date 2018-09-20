@@ -21,11 +21,8 @@ import static org.springframework.util.Assert.notNull;
 @PropertySource("classpath:application-security.properties")
 public class TokenServiceImpl implements TokenService {
 
-    @Value("${security.jwt.calim.username:username}")
-    private String CALIM_USERNAME;
-
-    @Value("${security.jwt.calim.password:password}")
-    private String CALIM_PASSWORD;
+    @Value("${security.jwt.calim.userdetailid:userdetailid}")
+    private String CALIM_USER_DETAIL_ID;
 
     @Value("${security.jwt.calim.created:created}")
     private String CALIM_CREATED;
@@ -44,51 +41,39 @@ public class TokenServiceImpl implements TokenService {
         notNull(request, "request can not be null.");
         final APIUserDetail userDetail = request.getUserDetail();
         final TokenType tokenType = request.getTokenType();
-        final String username = userDetail.getUsername();
-        final String passwordHash = userDetail.getPasswordHash();
+        final String userDetailId = userDetail.getId();
         final Date expires = request.getExpires();
         notNull(userDetail, "request.userDetail can not be null.");
+        hasText(userDetailId, "request.userDetail.id can not be null or empty.");
         notNull(tokenType, "request.tokenType can not be null.");
-        hasText(username, "request.userDetail.username can not be null or empty.");
-        hasText(username, "request.userDetail.passwordHash can not be null or empty.");
         notNull(expires, "request.expires can not be null.");
 
         final Date creationDate =  new Date();
         final boolean isActive = request.isActive();
 
         final Map<String, Object> claims = new HashMap<>();
-        claims.put(CALIM_USERNAME, username);
-        claims.put(CALIM_PASSWORD, passwordHash);
+        claims.put(CALIM_USER_DETAIL_ID, userDetailId);
         claims.put(CALIM_CREATED, creationDate);
         claims.put(CALIM_TYPE, tokenType);
         claims.put(CALIM_ACTIVE, isActive);
 
-        final Date expirationDate = request.getExpires();
-
-        return jwtTokenComponent.createToken(claims, expirationDate);
+        return jwtTokenComponent.createToken(claims);
     }
 
     @Override
-    public String refresh(final String token, final Date expires) {
+    public String refresh(final String token) {
         hasText(token, "request.token can not be null or empty.");
-        notNull(expires, "request.expires can not be null.");
 
         final Map<String, Object> claims = jwtTokenComponent.getClaims(token);
         claims.remove(CALIM_CREATED);
         final Date creationDate =  new Date();
         claims.put(CALIM_CREATED, creationDate);
-        return jwtTokenComponent.createToken(claims, expires);
+        return jwtTokenComponent.createToken(claims);
     }
 
     @Override
-    public String getUsername(final String token) {
+    public String getUserDetailId(final String token) {
         hasText(token, "token can not be null or empty.");
-        return jwtTokenComponent.getClaim(token, CALIM_USERNAME);
-    }
-
-    @Override
-    public String getPasswordHash(final String token) {
-        hasText(token, "token can not be null or empty.");
-        return jwtTokenComponent.getClaim(token, CALIM_PASSWORD);
+        return jwtTokenComponent.getClaim(token, CALIM_USER_DETAIL_ID);
     }
 }

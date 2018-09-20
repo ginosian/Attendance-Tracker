@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -51,14 +50,12 @@ public class JwtTokenComponent {
     //  base64UrlEncode(payload),
     //  secret)
 
-    public String createToken(final Map<String, Object> claimsMap, final Date expirationDate) {
+    public String createToken(final Map<String, Object> claimsMap) {
         notEmpty(claimsMap, "claims map can not be null or empty.");
-        notNull(expirationDate, "expirationDate can not be null");
         final String encodedKey = TextCodec.BASE64.encode(JWT_TOKEN_SECRET);
         return Jwts.builder()
                 .setHeader(assembleHeader())
                 .setClaims(claimsMap)
-                .setExpiration(expirationDate)
                 .signWith(signatureAlgorithm, encodedKey)
                 .compact();
     }
@@ -97,14 +94,13 @@ public class JwtTokenComponent {
     public Claims getClaims(final String token) {
         hasText(token, "token can not be null or empty.");
         final String encodedKey = TextCodec.BASE64.encode(JWT_TOKEN_SECRET);
-        return Jwts.parser().setSigningKey(encodedKey).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(encodedKey).setAllowedClockSkewSeconds(60000).parseClaimsJws(token).getBody();
     }
 
-    public void setCookie(final String token, final HttpServletResponse response, int expiry) {
+    public void setCookie(final String token, final HttpServletResponse response) {
         hasText(token, "token can not be null or empty.");
         notNull(response, "response can not be null.");
         final Cookie cookie = new Cookie(JWT_COOKIE, token);
-        cookie.setMaxAge(expiry);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         response.addCookie(cookie);

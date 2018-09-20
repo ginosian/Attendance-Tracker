@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static org.springframework.util.Assert.notNull;
@@ -44,7 +45,7 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
     private String masterApiUserDetailPasswordHash;
 
     @Override
-    public AuthenticationResponse authenticateByCredentials(final AuthenticationRequest request){
+    public AuthenticationResponse authenticateByCredentials(final AuthenticationRequest request) {
         notNull(request, "authenticationRequest.request cannot be null.");
         final String username = request.getUsername();
         final String plainPassword = request.getPlainPassword();
@@ -57,12 +58,10 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
 
         final String userId = userDetail.getUser().getId();
 
-        userCredentialValidationStrategy.validateForAuthentication(userDetail);
+        ApiAuthAccessToken existingToken = apiAuthAccessTokenService.findByUserDetailId(userDetail.getId()).orElse(null);
 
-        final ApiAuthAccessToken existingToken = apiAuthAccessTokenService.findByUserDetail(userDetail.getId()).orElse(null);
-
-
-        if(existingToken == null){
+        if (existingToken == null) {
+            userCredentialValidationStrategy.validateForAuthentication(userDetail);
             final ApiAuthAccessTokenCreationRequest apiAuthAccessTokenCreationRequest = create(userDetail, request.isRememberMe());
 
             logger.debug("Creating apiAuthAccessToken for user:'{}'...", userId);
@@ -70,39 +69,64 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
             logger.trace("ApiAuthAccessToken:'{}' is created for user:'{}'.", apiAuthAccessToken.getToken(), userId);
             return new AuthenticationResponse(userDetail, apiAuthAccessToken.getToken());
         } else {
-            final ApiAuthAccessTokenRefreshRequest apiAuthAccessTokenRefreshRequest = new ApiAuthAccessTokenRefreshRequest(existingToken);
-            logger.debug("Refreshing apiAuthAccessToken for user:'{}'...", userId);
-            final ApiAuthAccessToken apiAuthAccessToken = apiAuthAccessTokenService.updateApiAccessToken(apiAuthAccessTokenRefreshRequest);
-            logger.trace("ApiAuthAccessToken:'{}' is refreshed for user:'{}'.", apiAuthAccessToken.getToken(), userId);
-            return new AuthenticationResponse(userDetail, apiAuthAccessToken.getToken());
+            existingToken = authenticateByApiAccessToken(existingToken.getToken());
+            if(existingToken == null){
+                return null;
+            }
+            return new AuthenticationResponse(userDetail, existingToken.getToken());
         }
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        return new APIAuthenticationResponse(authenticateByCredentials((AuthenticationRequest)authentication.getDetails()));
+        return new APIAuthenticationResponse(authenticateByCredentials((AuthenticationRequest) authentication.getDetails()));
     }
 
     @Override
     public ApiAuthAccessToken authenticateByApiAccessToken(final String token) throws AuthException {
-        final ApiAuthAccessToken existingToken = apiAuthAccessTokenService.findByApiAccessToken(token).orElse(null);
-        if(existingToken == null){
+        ApiAuthAccessToken existingToken = apiAuthAccessTokenService.findByToken(token).orElse(null);
+        if (existingToken == null || !isValid(existingToken)) {
             return null;
         } else {
-            final ApiAuthAccessTokenRefreshRequest apiAuthAccessTokenRefreshRequest = new ApiAuthAccessTokenRefreshRequest(existingToken);
+            final LocalDateTime expires = existingToken.getExpires();
+            if (isRememberMe(existingToken) && (isExpired(expires) || isExpiring(expires))) {
+                final ApiAuthAccessTokenRefreshRequest apiAuthAccessTokenRefreshRequest = new ApiAuthAccessTokenRefreshRequest(existingToken);
+                existingToken = apiAuthAccessTokenService.updateApiAccessToken(apiAuthAccessTokenRefreshRequest);
+            } else {
+                if (isExpired(expires)) {
+                    final ApiAuthAccessTokenRefreshRequest apiAuthAccessTokenRefreshRequest = new ApiAuthAccessTokenRefreshRequest(existingToken);
+                    apiAuthAccessTokenService.inactivateApiAccessToken(apiAuthAccessTokenRefreshRequest);
+                    return null;
+                }
+            }
             logger.debug("Refreshing apiAuthAccessToken for user:'{}'...", existingToken.getApiUserDetail().getUser().getId());
-            final ApiAuthAccessToken apiAuthAccessToken = apiAuthAccessTokenService.updateApiAccessToken(apiAuthAccessTokenRefreshRequest);
-            logger.trace("ApiAuthAccessToken:'{}' is refreshed for user:'{}'.", apiAuthAccessToken.getToken(), existingToken.getApiUserDetail().getUser().getId());
-            return apiAuthAccessToken;
+            logger.trace("ApiAuthAccessToken:'{}' is refreshed for user:'{}'.", existingToken.getToken(), existingToken.getApiUserDetail().getUser().getId());
+            return existingToken;
         }
     }
 
-    private ApiAuthAccessTokenCreationRequest create(final APIUserDetail userDetail, final boolean isRememberMe){
+    private ApiAuthAccessTokenCreationRequest create(final APIUserDetail userDetail, final boolean isRememberMe) {
         final ApiAuthAccessTokenCreationRequest apiAuthAccessTokenCreationRequest = new ApiAuthAccessTokenCreationRequest();
         apiAuthAccessTokenCreationRequest.setUserDetail(userDetail);
         apiAuthAccessTokenCreationRequest.setTokenType(isRememberMe ? TokenType.LOGIN_REMEMBER_ME : TokenType.LOGIN);
         apiAuthAccessTokenCreationRequest.setActive(true);
         apiAuthAccessTokenCreationRequest.setExpires(new Date());
         return apiAuthAccessTokenCreationRequest;
+    }
+
+    private boolean isExpiring(final LocalDateTime expirationTime) {
+        return expirationTime.plusMinutes(1).isAfter(LocalDateTime.now());
+    }
+
+    private boolean isExpired(final LocalDateTime expirationTime) {
+        return expirationTime.isBefore(LocalDateTime.now());
+    }
+
+    private boolean isValid(final ApiAuthAccessToken existingToken) {
+        return existingToken.getActive() && !existingToken.isDeleted();
+    }
+
+    private boolean isRememberMe(final ApiAuthAccessToken existingToken) {
+        return existingToken.getTokenType().equals(TokenType.LOGIN_REMEMBER_ME);
     }
 }

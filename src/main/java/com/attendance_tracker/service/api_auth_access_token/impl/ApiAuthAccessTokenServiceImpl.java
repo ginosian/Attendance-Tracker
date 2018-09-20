@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.util.Assert.hasText;
@@ -36,15 +35,16 @@ public class ApiAuthAccessTokenServiceImpl implements ApiAuthAccessTokenService 
     private ApiAuthAccessTokenRepository tokenRepository;
 
     @Override
-    public Optional<ApiAuthAccessToken> findByUserDetail(final String userDetailId) {
-        hasText(userDetailId, "userDetailId can not be null");
+    public Optional<ApiAuthAccessToken> findByToken(final String token) {
+        hasText(token, "token can not be null");
+        final String userDetailId = tokenService.getUserDetailId(token);
         return Optional.ofNullable(tokenRepository.findByUser(userDetailId));
     }
 
     @Override
-    public Optional<ApiAuthAccessToken> findByApiAccessToken(final String token) {
-        hasText(token, "token can not be null");
-        return Optional.ofNullable(tokenRepository.findByToken(token));
+    public Optional<ApiAuthAccessToken> findByUserDetailId(final String userDetailId) {
+        hasText(userDetailId, "userDetailId can not be null");
+        return Optional.ofNullable(tokenRepository.findByUser(userDetailId));
     }
 
     @Override
@@ -74,22 +74,18 @@ public class ApiAuthAccessTokenServiceImpl implements ApiAuthAccessTokenService 
         final ApiAuthAccessToken apiAuthAccessToken  = request.getToken();
         notNull(apiAuthAccessToken, "request.apiAuthAccessToken can not be null");
 
-        final Date expires = createExpirationDate(new Date().getTime());
-        final String refreshedToken = tokenService.refresh(apiAuthAccessToken.getToken(), expires);
-
-        apiAuthAccessToken.setToken(refreshedToken);
-        apiAuthAccessToken.setExpires(expires.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        apiAuthAccessToken.setExpires(createExpirationDate(new Date().getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
         return tokenRepository.save(apiAuthAccessToken);
     }
 
     @Override
-    public void deleteApiAccessToken(final long apiAccessTokenId) {
+    public ApiAuthAccessToken inactivateApiAccessToken(ApiAuthAccessTokenRefreshRequest request) {
+        notNull(request, "request can not be null");
+        final ApiAuthAccessToken apiAuthAccessToken  = request.getToken();
+        notNull(apiAuthAccessToken, "request.apiAuthAccessToken can not be null");
 
-    }
-
-    @Override
-    public List<ApiAuthAccessToken> getApiAccessTokens() {
-        return null;
+        apiAuthAccessToken.setActive(false);
+        return tokenRepository.save(apiAuthAccessToken);
     }
 
     private Date createExpirationDate(final long time){
