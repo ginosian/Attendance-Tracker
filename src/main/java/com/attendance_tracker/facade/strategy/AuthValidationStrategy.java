@@ -6,6 +6,8 @@ import com.attendance_tracker.facade.authentication.PasswordHashHelper;
 import com.attendance_tracker.facade.authentication.exception.AuthException;
 import com.attendance_tracker.facade.authentication.model.AuthenticationRequest;
 import com.attendance_tracker.misc.TokenType;
+import com.attendance_tracker.service.api_auth_access_token.ApiAuthAccessTokenService;
+import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenRequest;
 import com.attendance_tracker.service.notification.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,9 @@ public class AuthValidationStrategy {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private ApiAuthAccessTokenService apiAuthAccessTokenService;
 
     public void validate(final APIUserDetail userDetail){
         notNull(userDetail, "userDetail can not be null");
@@ -57,6 +62,7 @@ public class AuthValidationStrategy {
 
     public void validateForRefreshing(final ApiAuthAccessToken token){
         if(token == null || (!isRememberMe(token) && (isExpired(token.getExpires()) || !token.getActive()))){
+            apiAuthAccessTokenService.inactivateApiAccessToken(new ApiAuthAccessTokenRequest(token));
             throw new AuthException("ApiAccessToken does not exist or is invalid or is expired.");
         }
     }
@@ -66,7 +72,7 @@ public class AuthValidationStrategy {
     }
 
     public boolean isExpiredLoginToken(final ApiAuthAccessToken token){
-        return isLogin(token) && isExpired(token.getExpires());
+        return isLogin(token) && (isExpired(token.getExpires()) || !token.getActive() || token.isDeleted());
     }
 
     private boolean isExpiring(final LocalDateTime expirationTime) {

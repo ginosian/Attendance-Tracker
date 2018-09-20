@@ -7,7 +7,7 @@ import com.attendance_tracker.repository.ApiAuthAccessTokenRepository;
 import com.attendance_tracker.service.api_auth_access_token.ApiAuthAccessTokenConverter;
 import com.attendance_tracker.service.api_auth_access_token.ApiAuthAccessTokenService;
 import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenCreationRequest;
-import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenRefreshRequest;
+import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenRequest;
 import com.attendance_tracker.service.token.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +41,7 @@ public class ApiAuthAccessTokenServiceImpl implements ApiAuthAccessTokenService 
     @Override
     public Optional<ApiAuthAccessToken> findByToken(final String token) {
         hasText(token, "token can not be null");
-        final String userDetailId = tokenService.getUserDetailId(token);
-        return Optional.ofNullable(tokenRepository.findByUser(userDetailId));
+        return Optional.ofNullable(tokenRepository.findByToken(token));
     }
 
     @Override
@@ -71,7 +70,7 @@ public class ApiAuthAccessTokenServiceImpl implements ApiAuthAccessTokenService 
     }
 
     @Override
-    public ApiAuthAccessToken refreshApiAccessToken(final ApiAuthAccessTokenRefreshRequest request) {
+    public ApiAuthAccessToken refreshApiAccessToken(final ApiAuthAccessTokenRequest request) {
         notNull(request, "request can not be null");
         final ApiAuthAccessToken token  = request.getToken();
         notNull(token, "request.token can not be null");
@@ -84,7 +83,7 @@ public class ApiAuthAccessTokenServiceImpl implements ApiAuthAccessTokenService 
     }
 
     @Override
-    public ApiAuthAccessToken inactivateApiAccessToken(ApiAuthAccessTokenRefreshRequest request) {
+    public ApiAuthAccessToken inactivateApiAccessToken(ApiAuthAccessTokenRequest request) {
         notNull(request, "request can not be null");
         final ApiAuthAccessToken apiAuthAccessToken  = request.getToken();
         notNull(apiAuthAccessToken, "request.apiAuthAccessToken can not be null");

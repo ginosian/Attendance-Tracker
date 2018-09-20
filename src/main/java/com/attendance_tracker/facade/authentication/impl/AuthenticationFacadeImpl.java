@@ -11,7 +11,7 @@ import com.attendance_tracker.facade.authentication.model.AuthenticationRequest;
 import com.attendance_tracker.facade.authentication.model.AuthenticationResponse;
 import com.attendance_tracker.facade.strategy.AuthValidationStrategy;
 import com.attendance_tracker.service.api_auth_access_token.ApiAuthAccessTokenService;
-import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenRefreshRequest;
+import com.attendance_tracker.service.api_auth_access_token.model.ApiAuthAccessTokenRequest;
 import com.attendance_tracker.service.user_detail.ApiUserDetailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,21 +40,10 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
     @Override
     public AuthenticationResponse authenticateByCredentials(final AuthenticationRequest request) throws AuthException {
         authValidationStrategy.validate(request);
-
         final APIUserDetail userDetail = apiUserDetailService.loadUserByUsername(request.getUsername());
-        ApiAuthAccessToken existingToken = apiAuthAccessTokenService.findByUserDetailId(userDetail.getId()).orElse(null);
-
-        if (existingToken == null) {
-            // First time login case
-            authValidationStrategy.validate(userDetail);
-            final ApiAuthAccessToken apiAuthAccessToken = apiAuthAccessTokenService.createApiAccessToken(
-                    AuthModelConverter.convert(userDetail, request.isRememberMe()));
-            return new AuthenticationResponse(userDetail, apiAuthAccessToken.getToken());
-        } else {
-            // Once already logged in case
-            apiAuthAccessTokenService.refreshApiAccessToken(new ApiAuthAccessTokenRefreshRequest(existingToken));
-            return new AuthenticationResponse(userDetail, existingToken.getToken());
-        }
+        authValidationStrategy.validate(userDetail);
+        final ApiAuthAccessToken apiAuthAccessToken = apiAuthAccessTokenService.createApiAccessToken(AuthModelConverter.convert(userDetail, request.isRememberMe()));
+        return new AuthenticationResponse(userDetail, apiAuthAccessToken.getToken());
     }
 
     @Override
@@ -62,11 +51,11 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
         ApiAuthAccessToken existingToken = apiAuthAccessTokenService.findByToken(token).orElse(null);
         authValidationStrategy.validateForRefreshing(existingToken);
         if (authValidationStrategy.isExpiredLoginToken(existingToken)) {
-            apiAuthAccessTokenService.inactivateApiAccessToken(new ApiAuthAccessTokenRefreshRequest(existingToken));
+            apiAuthAccessTokenService.inactivateApiAccessToken(new ApiAuthAccessTokenRequest(existingToken));
             throw new AuthException(String.format("Api user access token is expired:'%s'.", existingToken.getApiUserDetail().getUser().getId()));
         }
         if (authValidationStrategy.isExpiringRefreshToken(existingToken)) {
-            existingToken = apiAuthAccessTokenService.refreshApiAccessToken(new ApiAuthAccessTokenRefreshRequest(existingToken));
+            existingToken = apiAuthAccessTokenService.refreshApiAccessToken(new ApiAuthAccessTokenRequest(existingToken));
         }
         return new AuthenticationResponse(existingToken.getApiUserDetail(), existingToken.getToken());
     }
