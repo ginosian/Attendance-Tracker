@@ -83,13 +83,24 @@ public class ApiAuthAccessTokenServiceImpl implements ApiAuthAccessTokenService 
     }
 
     @Override
-    public ApiAuthAccessToken inactivateApiAccessToken(ApiAuthAccessTokenRequest request) {
+    public void inactivateApiAccessToken(final ApiAuthAccessTokenRequest request) {
         notNull(request, "request can not be null");
         final ApiAuthAccessToken apiAuthAccessToken  = request.getToken();
         notNull(apiAuthAccessToken, "request.apiAuthAccessToken can not be null");
 
         apiAuthAccessToken.setActive(false);
-        return tokenRepository.save(apiAuthAccessToken);
+        tokenRepository.save(apiAuthAccessToken);
+    }
+
+    @Override
+    public void deleteApiAccessToken(ApiAuthAccessTokenRequest request) {
+        notNull(request, "request can not be null");
+        final ApiAuthAccessToken apiAuthAccessToken  = request.getToken();
+        notNull(apiAuthAccessToken, "request.apiAuthAccessToken can not be null");
+
+        apiAuthAccessToken.setActive(false);
+        apiAuthAccessToken.setDeleted(true);
+        tokenRepository.save(apiAuthAccessToken);
     }
 
     private Date createExpirationDate(final long time){

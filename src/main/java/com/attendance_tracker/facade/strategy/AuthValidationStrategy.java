@@ -61,7 +61,7 @@ public class AuthValidationStrategy {
     }
 
     public void validateForRefreshing(final ApiAuthAccessToken token){
-        if(token == null || (!isRememberMe(token) && (isExpired(token.getExpires()) || !token.getActive()))){
+        if(token == null || token.isDeleted() || (!isRememberMe(token) && (isExpired(token.getExpires()) || !token.getActive()))){
             apiAuthAccessTokenService.inactivateApiAccessToken(new ApiAuthAccessTokenRequest(token));
             throw new AuthException("ApiAccessToken does not exist or is invalid or is expired.");
         }

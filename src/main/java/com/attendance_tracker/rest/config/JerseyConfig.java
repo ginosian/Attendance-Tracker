@@ -1,6 +1,7 @@
 package com.attendance_tracker.rest.config;
 
 import com.attendance_tracker.rest.endpoint.impl.InfoEndpointImpl;
+import com.attendance_tracker.rest.endpoint.impl.LogoutEndpointImpl;
 import com.attendance_tracker.rest.endpoint.impl.OwnerEndpointImpl;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
@@ -32,5 +33,6 @@ public class JerseyConfig extends ResourceConfig{
         // Endpoints
         register(InfoEndpointImpl.class);
         register(OwnerEndpointImpl.class);
+        register(LogoutEndpointImpl.class);
     }
 }

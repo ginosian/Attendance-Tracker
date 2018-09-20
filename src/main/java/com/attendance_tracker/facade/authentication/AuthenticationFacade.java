@@ -13,4 +13,6 @@ public interface AuthenticationFacade  extends AuthenticationManager {
     AuthenticationResponse authenticateByApiAccessToken(String token) throws AuthException;
 
     Authentication authenticate(Authentication authentication) throws AuthException;
+
+    void logout(String token);
 }

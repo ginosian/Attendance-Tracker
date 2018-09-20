@@ -16,5 +16,7 @@ public interface ApiAuthAccessTokenService {
 
     ApiAuthAccessToken refreshApiAccessToken(ApiAuthAccessTokenRequest request);
 
-    ApiAuthAccessToken inactivateApiAccessToken(ApiAuthAccessTokenRequest request);
+    void inactivateApiAccessToken(ApiAuthAccessTokenRequest request);
+
+    void deleteApiAccessToken(ApiAuthAccessTokenRequest request);
 }

@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import static org.springframework.util.Assert.hasText;
+
 @Service
 public class AuthenticationFacadeImpl implements AuthenticationFacade {
 
@@ -65,5 +67,12 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
         return new APIAuthenticationResponse(authenticateByCredentials((AuthenticationRequest) authentication.getDetails()));
     }
 
-
+    @Override
+    public void logout(String token) {
+        hasText(token, "token can not be null or empty.");
+        ApiAuthAccessToken existingToken = apiAuthAccessTokenService.findByToken(token).orElse(null);
+        if (existingToken != null) {
+            apiAuthAccessTokenService.deleteApiAccessToken(new ApiAuthAccessTokenRequest(existingToken));
+        }
+    }
 }

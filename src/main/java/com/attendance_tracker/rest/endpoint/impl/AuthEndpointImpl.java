@@ -6,6 +6,5 @@ public class AuthEndpointImpl implements AuthEndpoint {
 
     @Override
     public void register() {
-
     }
 }
