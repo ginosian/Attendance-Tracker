@@ -39,17 +39,6 @@ public class JwtTokenComponent {
 
     private String authenticationHeaderValuePrefix = "Bearer ";
 
-    //header
-    //"alg": "HS256",
-    //  "typ": "JWT"
-    //payload
-    //signature
-    // iss (issuer), exp (expiration time), sub (subject), aud (audience)
-    // HMACSHA256(
-    //  base64UrlEncode(header) + "." +
-    //  base64UrlEncode(payload),
-    //  secret)
-
     public String createToken(final Map<String, Object> claimsMap) {
         notEmpty(claimsMap, "claims map can not be null or empty.");
         final String encodedKey = TextCodec.BASE64.encode(JWT_TOKEN_SECRET);

@@ -43,7 +43,6 @@ public class APIAuthenticationResponse implements Authentication {
 
     @Override
     public void setAuthenticated(boolean b) throws IllegalArgumentException {
-
     }
 
     @Override

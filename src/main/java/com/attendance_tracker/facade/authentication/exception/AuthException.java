@@ -1,10 +1,12 @@
 package com.attendance_tracker.facade.authentication.exception;
 
-public class AuthException extends RuntimeException {
+import org.springframework.security.core.AuthenticationException;
 
-    public AuthException() {
-        super();
-    }
+import javax.servlet.http.HttpServletResponse;
+
+public class AuthException extends AuthenticationException {
+
+    private final int httpStatusCode = HttpServletResponse.SC_UNAUTHORIZED;
 
     public AuthException(String msg) {
         this(msg, null);
@@ -16,5 +18,9 @@ public class AuthException extends RuntimeException {
 
     public AuthException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public int getHttpStatusCode() {
+        return httpStatusCode;
     }
 }

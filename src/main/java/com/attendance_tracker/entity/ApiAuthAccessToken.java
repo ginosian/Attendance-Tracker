@@ -28,7 +28,7 @@ public class ApiAuthAccessToken extends AbstractEntity {
     @Column(name = "active", nullable = false)
     private Boolean active;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(foreignKey = @ForeignKey(name = "api_auth_access_token_api_user_detail_fk"))
     private APIUserDetail apiUserDetail;
     // endregion

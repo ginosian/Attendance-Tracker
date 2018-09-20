@@ -1,7 +1,9 @@
 package com.attendance_tracker.security.jwt;
 
-import com.attendance_tracker.entity.ApiAuthAccessToken;
+        import com.attendance_tracker.entity.APIUserDetail;
 import com.attendance_tracker.facade.authentication.AuthenticationFacade;
+import com.attendance_tracker.facade.authentication.exception.AuthException;
+import com.attendance_tracker.facade.authentication.model.AuthenticationResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -28,24 +30,25 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         final String header = req.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
             res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
+        } else {
+            try {
+                final AuthenticationResponse authentication = getAuthentication(header);
+                final APIUserDetail userDetail = authentication.getApiUserDetail();
+                SecurityContextHolder.getContext().setAuthentication(
+                        new UsernamePasswordAuthenticationToken(userDetail, authentication.getToken(), userDetail.getAuthorities()));
+                chain.doFilter(req, res);
+            } catch (AuthException e) {
+                SecurityContextHolder.getContext().setAuthentication(null);
+                res.setStatus(e.getHttpStatusCode());
+            } catch (IllegalArgumentException e){
+                SecurityContextHolder.getContext().setAuthentication(null);
+                res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
         }
-        final UsernamePasswordAuthenticationToken authentication = getAuthentication(header);
-        if (authentication == null){
-            SecurityContextHolder.getContext().setAuthentication(null);
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(req, res);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(final String header) {
+    private AuthenticationResponse getAuthentication(final String header) throws AuthException {
         final String token = header.replaceAll("Bearer ", "");
-        final ApiAuthAccessToken existingToken = authenticationFacade.authenticateByApiAccessToken(token);
-        if(existingToken == null || !existingToken.getActive()){
-            return null;
-        }
-        return new UsernamePasswordAuthenticationToken(existingToken.getApiUserDetail(), existingToken.getToken(), existingToken.getApiUserDetail().getAuthorities());
+        return authenticationFacade.authenticateByApiAccessToken(token);
     }
 }
