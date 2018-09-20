@@ -1,6 +1,7 @@
 package com.attendance_tracker.listener;
 
 import com.attendance_tracker.entity.*;
+import com.attendance_tracker.misc.RoleType;
 import com.attendance_tracker.repository.AbstractRepository;
 import com.attendance_tracker.repository.BusinessDivisionRepository;
 import com.google.common.collect.Sets;
@@ -96,10 +97,10 @@ public class ApplicationEventListener {
         logger.debug("Done Business Division with policy.");
 
         logger.info("Saving User Details ...");
-        APIUserDetail employeeDetails = MockData.userDetails(Sets.newHashSet(roles), employee, owner);
+        APIUserDetail employeeDetails = MockData.userDetails(Sets.newHashSet(roles.stream().filter(role -> role.getType().equals(RoleType.EMPLOYEE)).collect(Collectors.toSet())), employee, owner);
         employeeDetails.setUsername("employee@employee.com");
         employeeDetails = abstractRepository.save(employeeDetails);
-        APIUserDetail ownerDetails = MockData.userDetails(Sets.newHashSet(roles), owner, owner);
+        APIUserDetail ownerDetails = MockData.userDetails(Sets.newHashSet(roles.stream().filter(role -> role.getType().equals(RoleType.OWNER)).collect(Collectors.toSet())), owner, owner);
         ownerDetails.setUsername("owner@owner.com");
         ownerDetails = abstractRepository.save(ownerDetails);
         logger.debug("Done User Details.");
