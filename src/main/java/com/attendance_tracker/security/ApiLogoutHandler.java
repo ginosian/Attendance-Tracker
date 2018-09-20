@@ -1,31 +1,28 @@
-package com.attendance_tracker.rest.endpoint.impl;
+package com.attendance_tracker.security;
 
-import com.attendance_tracker.facade.authentication.AuthenticationFacade;
-import com.attendance_tracker.rest.endpoint.LogoutEndpoint;
+import com.attendance_tracker.service.api_auth_access_token.ApiAuthAccessTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Context;
+import javax.servlet.http.HttpServletResponse;
 
 @Component
-public class LogoutEndpointImpl implements LogoutEndpoint {
+public class ApiLogoutHandler implements LogoutHandler {
 
     @Autowired
-    private AuthenticationFacade authenticationFacade;
-
-    @Context
-    private HttpServletRequest request;
+    private ApiAuthAccessTokenService authenticationFacade;
 
     @Override
-    public void logout() {
+    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         final String header = request.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
             return;
         } else {
             final String token = header.replaceAll("Bearer ", "");
-            authenticationFacade.logout(token);
             SecurityContextHolder.getContext().setAuthentication(null);
         }
     }
