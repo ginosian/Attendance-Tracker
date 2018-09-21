@@ -1,6 +1,6 @@
 package com.attendance_tracker.security;
 
-import com.attendance_tracker.service.api_auth_access_token.ApiAuthAccessTokenService;
+import com.attendance_tracker.facade.authentication.AuthenticationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,8 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class ApiLogoutHandler implements LogoutHandler {
 
+    private AuthenticationFacade authenticationFacade;
+
+
     @Autowired
-    private ApiAuthAccessTokenService authenticationFacade;
+    public ApiLogoutHandler(AuthenticationFacade authenticationFacade) {
+        this.authenticationFacade = authenticationFacade;
+    }
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
@@ -23,6 +28,7 @@ public class ApiLogoutHandler implements LogoutHandler {
             return;
         } else {
             final String token = header.replaceAll("Bearer ", "");
+            authenticationFacade.logout(token);
             SecurityContextHolder.getContext().setAuthentication(null);
         }
     }

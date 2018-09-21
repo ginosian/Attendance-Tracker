@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
-                .logout().addLogoutHandler(new ApiLogoutHandler())
+                .logout().addLogoutHandler(new ApiLogoutHandler(authenticationFacade))
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
