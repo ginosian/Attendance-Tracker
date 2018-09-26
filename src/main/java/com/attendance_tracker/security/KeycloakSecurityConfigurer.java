@@ -52,7 +52,7 @@ public class KeycloakSecurityConfigurer extends KeycloakWebSecurityConfigurerAda
         super.configure(http);
         http
                 .authorizeRequests()
-                .antMatchers("/keycloak*").permitAll();
+                .antMatchers("/keycloak*", "/info*", "/auth*").permitAll();
     }
 
     @Bean

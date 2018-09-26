@@ -1,8 +1,6 @@
 package com.attendance_tracker.rest.endpoint;
 
 
-import org.keycloak.admin.client.resource.RealmResource;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -15,6 +13,6 @@ import javax.ws.rs.core.MediaType;
 public interface KeycloakEndpoint {
 
     @GET
-    @Path("/admin/realms")
-    RealmResource realms();
+    @Path("")
+    void init();
 }
