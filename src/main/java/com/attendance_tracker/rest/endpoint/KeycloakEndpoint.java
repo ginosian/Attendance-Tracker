@@ -1,22 +1,20 @@
 package com.attendance_tracker.rest.endpoint;
 
 
+import org.keycloak.admin.client.resource.RealmResource;
+
 import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("")
+@Path("/keycloak")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public interface AuthEndpoint {
+public interface KeycloakEndpoint {
 
-    @POST
-    @Path("/register")
-    void register();
-
-    @POST
-    @Path("/logout")
-    void logout();
+    @GET
+    @Path("/admin/realms")
+    RealmResource realms();
 }

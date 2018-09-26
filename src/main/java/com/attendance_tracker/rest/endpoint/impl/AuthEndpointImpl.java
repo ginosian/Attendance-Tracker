@@ -6,5 +6,11 @@ public class AuthEndpointImpl implements AuthEndpoint {
 
     @Override
     public void register() {
+        System.out.println();
+    }
+
+    @Override
+    public void logout() {
+        System.out.println();
     }
 }
